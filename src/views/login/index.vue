@@ -42,7 +42,6 @@
 import {reactive, ref } from 'vue'
 import { ElMessage, FormInstance } from 'element-plus'
 import { login } from '@/api/user'
-import { adminMenu } from '@/api/role'
 import { userStore } from '@/store/user'
 import { useRouter } from 'vue-router';
 const store = userStore()

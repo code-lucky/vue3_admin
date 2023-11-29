@@ -12,7 +12,8 @@ export const request =(options:any)=> {
       baseURL: 'http://127.0.0.1:3000',
       timeout: 80000 // request timeout
     })
- 
+    
+    
     // request interceptor
     service.interceptors.request.use(
       (config:any) => {

@@ -18,7 +18,6 @@
     </div>
 </template>
 <script setup lang="ts">
-import { ar } from 'element-plus/es/locale';
 import path from 'path-browserify'
 import { reactive, ref, watch } from 'vue';
 import { useRoute } from 'vue-router';

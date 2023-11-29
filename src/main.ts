@@ -10,6 +10,7 @@ import router from "@/router"
 //导入pinia状态管理
 import store from './store/index'
 import '@/permission'
+import './styles/style.scss'
 
 const app = createApp(App)
 // 配置全局axios

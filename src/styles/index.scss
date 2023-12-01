@@ -62,3 +62,10 @@ div:focus {
   border-top-color: rgba($color: #fff, $alpha: 0) !important;
   border-left-color: rgba($color: #fff, $alpha: 0) !important;
 }
+
+.el-dialog{
+  border-radius: 5px !important;
+}
+.el-dialog__body{
+  border-top:solid 1px #b7b5b5;
+}

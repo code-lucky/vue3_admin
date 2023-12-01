@@ -1,78 +1,82 @@
 <template>
-    <el-form :model="form" label-width="120px">
-      <el-form-item label="Activity name">
-        <el-input v-model="form.name" />
-      </el-form-item>
-      <el-form-item label="Activity zone">
-        <el-select v-model="form.region" placeholder="please select your zone">
-          <el-option label="Zone one" value="shanghai" />
-          <el-option label="Zone two" value="beijing" />
-        </el-select>
-      </el-form-item>
-      <el-form-item label="Activity time">
-        <el-col :span="11">
-          <el-date-picker
-            v-model="form.date1"
-            type="date"
-            placeholder="Pick a date"
-            style="width: 100%"
-          />
-        </el-col>
-        <el-col :span="2" class="text-center">
-          <span class="text-gray-500">-</span>
-        </el-col>
-        <el-col :span="11">
-          <el-time-picker
-            v-model="form.date2"
-            placeholder="Pick a time"
-            style="width: 100%"
-          />
-        </el-col>
-      </el-form-item>
-      <el-form-item label="Instant delivery">
-        <el-switch v-model="form.delivery" />
-      </el-form-item>
-      <el-form-item label="Activity type">
-        <el-checkbox-group v-model="form.type">
-          <el-checkbox label="Online activities" name="type" />
-          <el-checkbox label="Promotion activities" name="type" />
-          <el-checkbox label="Offline activities" name="type" />
-          <el-checkbox label="Simple brand exposure" name="type" />
-        </el-checkbox-group>
-      </el-form-item>
-      <el-form-item label="Resources">
-        <el-radio-group v-model="form.resource">
-          <el-radio label="Sponsor" />
-          <el-radio label="Venue" />
-        </el-radio-group>
-      </el-form-item>
-      <el-form-item label="Activity form">
-        <el-input v-model="form.desc" type="textarea" />
-      </el-form-item>
-      <el-form-item>
-        <el-button type="primary" @click="onSubmit">Create</el-button>
-        <el-button>Cancel</el-button>
-      </el-form-item>
-    </el-form>
-  </template>
-  
-  <script lang="ts" setup>
-  import { reactive } from 'vue'
-  
-  // do not use same name with ref
-  const form = reactive({
-    name: '',
-    region: '',
-    date1: '',
-    date2: '',
-    delivery: false,
-    type: [],
-    resource: '',
-    desc: '',
+  <div class="flex mb-20">
+    <el-input v-model="roleName" placeholder="请输入用户名称" clearable class="w-300" />
+    <el-button class="ml-10" type="primary" plain @click="getRoleUserListByName">查询</el-button>
+    <el-button class="ml-10" :icon="RefreshRight" @click="resetRoleName">重置</el-button>
+  </div>
+  <el-button type="primary" class="mb-20" @click="isDialog = true">添加角色</el-button>
+  <el-table :data="roleUserList" border style="width: 100%">
+    <el-table-column prop="id" label="用户编号" />
+    <el-table-column prop="roleName" label="角色昵称" />
+    <el-table-column prop="status" label="状态">
+      <template  #default="scope">
+        <el-tag :type="scope.row.status==0?`success`:`danger`">{{ statusArr[scope.row.status] }}</el-tag>
+      </template>
+    </el-table-column>
+    <el-table-column prop="createTime" label="创建时间">
+      <template #default="scope">
+        {{ formatDate(scope.row.createTime) }}
+      </template>
+    </el-table-column>
+    <el-table-column prop="updateTime" label="更新时间">
+      <template #default="scope">
+        {{ formatDate(scope.row.updateTime) }}
+      </template>
+    </el-table-column>
+    <el-table-column prop="edit" label="编辑">
+      <template #default>
+        <el-button link type="primary" size="small">编辑</el-button>
+      </template>
+    </el-table-column>
+  </el-table>
+  <el-dialog v-model="isDialog" title="添加角色" width="30%" center>
+    <AddRole @addRole="addRole" @cancel="cancel"></AddRole>
+  </el-dialog>
+</template>
+
+<script lang="ts" setup>
+import { getRoleUserList } from '@/api/role';
+import { RefreshRight } from '@element-plus/icons-vue'
+import { onMounted, reactive, ref } from 'vue';
+import AddRole from './components/add-role.vue'
+import { formatDate } from '@/filters/index.js'
+
+const statusArr = reactive(['显示','不显示'])
+const roleUserList = ref([])
+const roleName = ref('')
+const isDialog = ref(false)
+/**
+ * 根据角色名称查询角色列表
+ */
+const getRoleUserListByName = () =>{
+  getRoleUserList(roleName.value).then((res:any)=>{
+    roleUserList.value = res.data
   })
-  
-  const onSubmit = () => {
-    console.log('submit!')
-  }
-  </script>
-  
+}
+
+/**
+ * 查询角色列表
+ */
+const findRoleUserList = () =>{
+  getRoleUserList(undefined).then((res:any)=>{
+    roleUserList.value = res.data
+    console.log('roleUserList', roleUserList)
+  })
+}
+
+const resetRoleName = () =>{
+  roleName.value = ''
+}
+const addRole = (data:Object) =>{
+  console.log('进行了addRole操作', data)
+}
+const cancel = () =>{
+  isDialog.value = false
+  console.log('进行了cancel操作')
+}
+
+onMounted(() => {
+  findRoleUserList()
+})
+
+</script>

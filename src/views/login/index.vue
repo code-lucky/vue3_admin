@@ -39,7 +39,7 @@
     </div>
 </template>
 <script lang="ts" setup>
-import {reactive, ref } from 'vue'
+import {onMounted, onUnmounted, reactive, ref } from 'vue'
 import { ElMessage, FormInstance } from 'element-plus'
 import { login } from '@/api/user'
 import { userStore } from '@/store/user'
@@ -99,11 +99,24 @@ const submitForm = (formEl: FormInstance | undefined) => {
                 }
             })
         } else {
-            console.log('error submit!')
             return false
         }
     })
 }
+
+const keyDown = (e:any) =>{
+    if(e.keyCode == 13){
+        submitForm(ruleFormRef.value)
+    }
+}
+
+onMounted(() => {
+    window.addEventListener('keydown', keyDown)
+})
+
+onUnmounted(() => {
+    window.removeEventListener('keydown', keyDown, false)
+})
 </script>
 <style scoped lang="scss">
 $bg:#2d3a4b;

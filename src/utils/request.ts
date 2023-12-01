@@ -36,10 +36,16 @@ export const request =(options:any)=> {
     // response interceptor
     service.interceptors.response.use(
        (response:any) => {
-        if(response.data.code!=200){
-            ElMessage.error(response.data.message)
+        if(response.data.code === 200){
+          return response.data
         }else{
-            return response.data
+          if(response.data.data === '用户未登录'){
+            window.localStorage.clear()
+            window.location.reload()
+            ElMessage.error(response.data.data)
+          }else{
+            ElMessage.error(response.data.data)
+          }
         }
       },
       error => {

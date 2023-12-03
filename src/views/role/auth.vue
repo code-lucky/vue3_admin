@@ -1,78 +1,38 @@
 <template>
-    <el-form :model="form" label-width="120px">
-      <el-form-item label="Activity name">
-        <el-input v-model="form.name" />
-      </el-form-item>
-      <el-form-item label="Activity zone">
-        <el-select v-model="form.region" placeholder="please select your zone">
-          <el-option label="Zone one" value="shanghai" />
-          <el-option label="Zone two" value="beijing" />
-        </el-select>
-      </el-form-item>
-      <el-form-item label="Activity time">
-        <el-col :span="11">
-          <el-date-picker
-            v-model="form.date1"
-            type="date"
-            placeholder="Pick a date"
-            style="width: 100%"
-          />
-        </el-col>
-        <el-col :span="2" class="text-center">
-          <span class="text-gray-500">-</span>
-        </el-col>
-        <el-col :span="11">
-          <el-time-picker
-            v-model="form.date2"
-            placeholder="Pick a time"
-            style="width: 100%"
-          />
-        </el-col>
-      </el-form-item>
-      <el-form-item label="Instant delivery">
-        <el-switch v-model="form.delivery" />
-      </el-form-item>
-      <el-form-item label="Activity type">
-        <el-checkbox-group v-model="form.type">
-          <el-checkbox label="Online activities" name="type" />
-          <el-checkbox label="Promotion activities" name="type" />
-          <el-checkbox label="Offline activities" name="type" />
-          <el-checkbox label="Simple brand exposure" name="type" />
-        </el-checkbox-group>
-      </el-form-item>
-      <el-form-item label="Resources">
-        <el-radio-group v-model="form.resource">
-          <el-radio label="Sponsor" />
-          <el-radio label="Venue" />
-        </el-radio-group>
-      </el-form-item>
-      <el-form-item label="Activity form">
-        <el-input v-model="form.desc" type="textarea" />
-      </el-form-item>
-      <el-form-item>
-        <el-button type="primary" @click="onSubmit">Create</el-button>
-        <el-button>Cancel</el-button>
-      </el-form-item>
-    </el-form>
-  </template>
+  <div class="flex mb-20">
+    <el-input v-model="userName" placeholder="请输入用户名称" clearable class="w-300" />
+    <el-button class="ml-10" type="primary" plain >查询</el-button>
+  </div>
+  <el-button type="primary" class="mb-20">添加角色</el-button>
+  <el-table :data="userList" border style="width: 100%">
+    <el-table-column prop="id" label="用户编号" />
+    <el-table-column prop="userName" label="用户昵称" />
+    <el-table-column prop="roleName" label="用户身份"/>
+    <el-table-column prop="status" label="状态">
+      <template  #default="scope">
+        <el-tag :type="scope.row.status==0?`success`:`danger`">{{ statusArr[scope.row.status] }}</el-tag>
+      </template>
+    </el-table-column>
+    <el-table-column prop="createTime" label="创建时间" />
+    <el-table-column prop="createTime" label="更新时间" />
+    <el-table-column prop="edit" label="编辑">
+      <template #default>
+        <el-button link type="primary" size="small">编辑</el-button>
+      </template>
+    </el-table-column>
+  </el-table>
+</template>
+
+<script lang="ts" setup>
+import { onMounted, reactive, ref } from 'vue';
+import { formatDate } from '@/filters/index.js'
+const statusArr = reactive(['开启','关闭'])
+const isDelete = reactive(['是','否'])
+const userName = ref('')
+const userList = ref([])
+
+onMounted(() => {
   
-  <script lang="ts" setup>
-  import { reactive } from 'vue'
-  
-  // do not use same name with ref
-  const form = reactive({
-    name: '',
-    region: '',
-    date1: '',
-    date2: '',
-    delivery: false,
-    type: [],
-    resource: '',
-    desc: '',
-  })
-  
-  const onSubmit = () => {
-    console.log('submit!')
-  }
-  </script>
-  
+})
+
+</script>

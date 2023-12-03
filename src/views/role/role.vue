@@ -72,7 +72,6 @@ const addRole = (data:Object) =>{
 }
 const cancel = () =>{
   isDialog.value = false
-  console.log('进行了cancel操作')
 }
 
 onMounted(() => {

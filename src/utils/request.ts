@@ -1,7 +1,8 @@
  
-import axios from 'axios'
+import axios, { AxiosInstance } from 'axios'
 import { ElMessage  } from 'element-plus'
 import catchs from '@/utils/cache'
+import { IResponse } from './type'
 
 export const request =(options:any)=> {
   return new Promise((resolve, reject) => {
@@ -35,7 +36,7 @@ export const request =(options:any)=> {
  
     // response interceptor
     service.interceptors.response.use(
-       (response:any) => {
+       (response: IResponse | any) => {
         if(response.data.code === 200){
           return response.data
         }else{

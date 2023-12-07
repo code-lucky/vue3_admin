@@ -7,10 +7,10 @@
   <el-table :data="userList" border style="width: 100%">
     <el-table-column prop="id" label="用户编号" />
     <el-table-column prop="userName" label="用户昵称" />
-    <el-table-column prop="roleName" label="用户身份"/>
+    <el-table-column prop="roleName" label="用户身份" />
     <el-table-column prop="status" label="状态">
-      <template  #default="scope">
-        <el-tag :type="scope.row.status==0?`success`:`danger`">{{ statusArr[scope.row.status] }}</el-tag>
+      <template #default="scope">
+        <el-tag :type="scope.row.status == 0 ? `success` : `danger`">{{ statusArr[scope.row.status] }}</el-tag>
       </template>
     </el-table-column>
     <el-table-column prop="createTime" label="创建时间">
@@ -38,43 +38,43 @@
 <script lang="ts" setup>
 import UserModule from './components/user-module.vue'
 import { onMounted, reactive, ref } from 'vue';
-import { formatDate } from '@/filters/index.js'
+import { formatDate } from '@/filters/index'
 import { getUserList } from '@/api/user';
 import { getRoleUserList } from '@/api/role'
-const statusArr = reactive(['开启','关闭'])
-const isDelete = reactive(['是','否'])
+const statusArr = reactive(['开启', '关闭'])
+const isDelete = reactive(['是', '否'])
 const userName = ref('')
 const userList = ref([])
 const isDialog = ref(false)
 const roleList = ref([])
 
-const findUserList = () =>{
-  getUserList(undefined).then((res:any)=>{
+const findUserList = () => {
+  getUserList(undefined).then((res: any) => {
     userList.value = res.data.userList
   })
 }
 
-const findUserListByName = () =>{
-  getUserList(userName.value).then((res:any)=>{
+const findUserListByName = () => {
+  getUserList(userName.value).then((res: any) => {
     userList.value = res.data.userList
   })
 }
 
-const getRoleList = () =>{
-  getRoleUserList(undefined).then((res:any)=>{
+const getRoleList = () => {
+  getRoleUserList(undefined).then((res: any) => {
     roleList.value = res.data
   })
 }
 
-const cancel = () =>{
+const cancel = () => {
   isDialog.value = false
 }
 
-const addUser = (val:any) =>{
+const addUser = (val: any) => {
   console.log('val====>', val)
 }
 
-const editUser = () =>{
+const editUser = () => {
 
 }
 

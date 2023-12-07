@@ -1,9 +1,9 @@
 <template>
     <div class="continer">
-        <Sidebar/>
+        <Sidebar />
         <div class="continer-right">
-            <nav-bar/>
-            <AppMain/>
+            <nav-bar />
+            <AppMain />
         </div>
     </div>
 </template>
@@ -14,9 +14,10 @@ import AppMain from './components/AppMain.vue';
 
 </script>
 <style lang="scss" scoped>
-.continer{
+.continer {
     display: flex;
-    &-right{
+
+    &-right {
         width: 100%;
     }
 }

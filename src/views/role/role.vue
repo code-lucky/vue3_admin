@@ -35,10 +35,11 @@
 </template>
 
 <script lang="ts" setup>
+import { RefreshRight } from '@element-plus/icons-vue'
 import { getRoleUserList } from '@/api/role';
 import { onMounted, reactive, ref } from 'vue';
 import AddRole from './components/add-role.vue'
-import { formatDate } from '@/filters/index.js'
+import { formatDate } from '@/filters/index'
 
 const statusArr = reactive(['显示', '不显示'])
 const roleUserList = ref([])

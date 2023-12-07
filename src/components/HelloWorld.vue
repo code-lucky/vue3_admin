@@ -56,9 +56,11 @@ code {
   border-radius: 4px;
   color: #304455;
 }
-.a{
+
+.a {
   color: #42b983;
-  .b{
+
+  .b {
     color: pink;
   }
 }

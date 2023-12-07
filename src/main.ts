@@ -13,7 +13,7 @@ import '@/permission'
 import './styles/style.scss'
 
 const app = createApp(App)
-// 配置全局axios
+// 注册全局icon
 for (const [key, component] of Object.entries(ElementPlusIconsVue)) {
     app.component(key, component)
 }

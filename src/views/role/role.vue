@@ -9,8 +9,8 @@
     <el-table-column prop="id" label="用户编号" />
     <el-table-column prop="roleName" label="角色昵称" />
     <el-table-column prop="status" label="状态">
-      <template  #default="scope">
-        <el-tag :type="scope.row.status==0?`success`:`danger`">{{ statusArr[scope.row.status] }}</el-tag>
+      <template #default="scope">
+        <el-tag :type="scope.row.status == 0 ? `success` : `danger`">{{ statusArr[scope.row.status] }}</el-tag>
       </template>
     </el-table-column>
     <el-table-column prop="createTime" label="创建时间">
@@ -36,20 +36,19 @@
 
 <script lang="ts" setup>
 import { getRoleUserList } from '@/api/role';
-import { RefreshRight } from '@element-plus/icons-vue'
 import { onMounted, reactive, ref } from 'vue';
 import AddRole from './components/add-role.vue'
 import { formatDate } from '@/filters/index.js'
 
-const statusArr = reactive(['显示','不显示'])
+const statusArr = reactive(['显示', '不显示'])
 const roleUserList = ref([])
 const roleName = ref('')
 const isDialog = ref(false)
 /**
  * 根据角色名称查询角色列表
  */
-const getRoleUserListByName = () =>{
-  getRoleUserList(roleName.value).then((res:any)=>{
+const getRoleUserListByName = () => {
+  getRoleUserList(roleName.value).then((res: any) => {
     roleUserList.value = res.data
   })
 }
@@ -57,20 +56,20 @@ const getRoleUserListByName = () =>{
 /**
  * 查询角色列表
  */
-const findRoleUserList = () =>{
-  getRoleUserList(undefined).then((res:any)=>{
+const findRoleUserList = () => {
+  getRoleUserList(undefined).then((res: any) => {
     roleUserList.value = res.data
     console.log('roleUserList', roleUserList)
   })
 }
 
-const resetRoleName = () =>{
+const resetRoleName = () => {
   roleName.value = ''
 }
-const addRole = (data:Object) =>{
+const addRole = (data: Object) => {
   console.log('进行了addRole操作', data)
 }
-const cancel = () =>{
+const cancel = () => {
   isDialog.value = false
 }
 

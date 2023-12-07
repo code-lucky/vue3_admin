@@ -48,9 +48,9 @@ const routes: Array<RouteRecordRaw> = [
         name: '用户管理',
         component: () => import('@/views/role/user.vue'),
       },{
-        path: 'auth',
+        path: 'menu',
         name: '权限管理',
-        component: () => import('@/views/role/auth.vue'),
+        component: () => import('@/views/role/menu.vue'),
       }
     ]
   }

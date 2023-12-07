@@ -9,19 +9,14 @@
             </el-form-item>
             <el-form-item label="管理员身份" prop="roleId">
                 <el-select v-model="roleId" class="m-2" placeholder="Select" size="large">
-                    <el-option
-                    v-for="item in roleList"
-                    :key="item.id"
-                    :label="item.roleName"
-                    :value="item.id"
-                    />
+                    <el-option v-for="item in roleList" :key="item.id" :label="item.roleName" :value="item.id" />
                 </el-select>
             </el-form-item>
             <el-form-item label="管理员手机号" prop="phoneNumber">
                 <el-input v-model="submitData.userName" placeholder="请输入管理员手机号" />
             </el-form-item>
             <el-form-item label="状态" prop="status">
-                <el-switch v-model="submitData.status" class="ml-2"/>
+                <el-switch v-model="submitData.status" class="ml-2" />
             </el-form-item>
             <el-form-item>
                 <template v-if="status === 'add'">
@@ -43,16 +38,16 @@ const props = defineProps({
         type: String,
         default: '',
     },
-    roleList:{
+    roleList: {
         type: Object,
-        default:[]
+        default: []
     },
     userInfo: {
         type: Object,
         default: {}
     }
 })
-const emit = defineEmits(['addUser','cancel','editUser'])
+const emit = defineEmits(['addUser', 'cancel', 'editUser'])
 const submitData = ref({
     userName: '',
     password: '',
@@ -63,21 +58,17 @@ const submitData = ref({
 const roleId = ref('')
 const roleList = props.roleList
 
-const cancel = () =>{
+const cancel = () => {
     emit('cancel')
 }
-const addUser = () =>{
-    emit('addUser',submitData.value)
+const addUser = () => {
+    emit('addUser', submitData.value)
 }
-const editUser = () =>{
-    emit('editUser',submitData.value)
+const editUser = () => {
+    emit('editUser', submitData.value)
 }
 
 onMounted(() => {
-    console.log(props)
-    if(props.userInfo){
-        console.log(props)
-    }
 })
 </script>
 <style scoped lang="scss"></style>

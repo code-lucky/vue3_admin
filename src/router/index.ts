@@ -33,27 +33,7 @@ const routes: Array<RouteRecordRaw> = [
       component: () => import('@/views/tabs/collapse.vue'),
     }]
   },
-  {
-    path: "/role",
-    redirect: '/role/index',
-    name: '权限管理',
-    component: Layout,
-    children: [
-      {
-        path: 'index',
-        name: '角色管理',
-        component: () => import('@/views/role/role.vue'),
-      }, {
-        path: 'user',
-        name: '用户管理',
-        component: () => import('@/views/role/user.vue'),
-      }, {
-        path: 'menu',
-        name: '权限管理',
-        component: () => import('@/views/role/menu.vue'),
-      }
-    ]
-  }
+
 ];
 
 const router = createRouter({

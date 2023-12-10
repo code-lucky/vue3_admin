@@ -1,13 +1,16 @@
 import router from "./router";
+import pinia from "./store/index"
+import { userStore } from "./store/user";
 import catchs from "./utils/cache";
 import NProgress from 'nprogress'
 import 'nprogress/nprogress.css'
-const whiteList = ['/login']
-router.beforeEach(async(to,form,next)=>{
+const store = userStore(pinia)
+const whiteList = ['/login', '/404']
+router.beforeEach(async (to, form, next) => {
     NProgress.start();
     const Token = catchs.getStorage(catchs.state.TOKEN)
 
-    if(Token){
+    if (Token) {
         if (to.path === '/login') {
             next({ path: '/' })
             NProgress.done()
@@ -15,7 +18,7 @@ router.beforeEach(async(to,form,next)=>{
             next()
             NProgress.done()
         }
-    }else{
+    } else {
         if (whiteList.indexOf(to.path) !== -1) {
             next()
             NProgress.done()

@@ -60,7 +60,6 @@ const getRoleUserListByName = () => {
 const findRoleUserList = () => {
   getRoleUserList(undefined).then((res: any) => {
     roleUserList.value = res.data
-    console.log('roleUserList', roleUserList)
   })
 }
 

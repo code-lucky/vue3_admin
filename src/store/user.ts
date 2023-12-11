@@ -27,17 +27,31 @@ export const userStore = defineStore('userInfo', {
 		async setUserInfo(userInfo: any) {
 			this.userInfo = userInfo
 			this.setToken(userInfo.accessToken)
-			const data: any = await getMenuList()
-			const resultMenu: any = await this.toTree(data.data, 0)
-			this.menuList = resultMenu
-			const routes: RouteRecordRaw[] = resultMenu
-			routes.forEach((item => {
-				router.addRoute(item)
-			}))
-			localStorage.setItem('menu-list', JSON.stringify(resultMenu))
 		},
 		setToken(token: any) {
 			catchs.setStorage('TOKEN', token)
+		},
+		async setRoutes() {
+			const data: any = await getMenuList()
+			const routes = data.data
+			routes.forEach((item: any) => {
+				const result = {
+					path: item.component,
+					redirect: item.component,
+					name: item.name,
+					component: item.pid === 0 ? Layout : modules[`../views${item.component}.vue`],
+					children: []
+				}
+				router.addRoute(result)
+			})
+			// const resultMenu: any = await this.toTree(data.data, 0)
+			// this.menuList = resultMenu
+			// const routes: RouteRecordRaw[] = resultMenu
+			// routes.forEach((item => {
+			// 	router.addRoute(item)
+			// }))
+			// console.log('router===>', router.options.routes)
+			// localStorage.setItem('menu-list', JSON.stringify(resultMenu))
 		},
 		async toTree(treeList: any, pid: number) {
 			const arr: any = []

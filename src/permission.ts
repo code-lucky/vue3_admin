@@ -4,6 +4,7 @@ import { userStore } from "./store/user";
 import catchs from "./utils/cache";
 import NProgress from 'nprogress'
 import 'nprogress/nprogress.css'
+import Layout from '@/layout/index.vue'
 const store = userStore(pinia)
 const whiteList = ['/login', '/404']
 router.beforeEach(async (to, form, next) => {
@@ -15,7 +16,9 @@ router.beforeEach(async (to, form, next) => {
             next({ path: '/' })
             NProgress.done()
         } else {
+            await store.setRoutes()
             next()
+            // next({ ...to, replace: true })
             NProgress.done()
         }
     } else {

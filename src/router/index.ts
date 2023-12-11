@@ -1,5 +1,6 @@
 import { createRouter, createWebHashHistory, RouteRecordRaw } from "vue-router";
 import Layout from '@/layout/index.vue'
+import { getMenuTree } from '@/api/menu'
 const routes: Array<RouteRecordRaw> = [
   {
     path: "/login",
@@ -18,21 +19,6 @@ const routes: Array<RouteRecordRaw> = [
       component: () => import('@/views/dashboard/index.vue'),
     }]
   },
-  {
-    path: "/example",
-    redirect: '/example/table',
-    name: 'Example',
-    component: Layout,
-    children: [{
-      path: 'table',
-      name: 'Table',
-      component: () => import('@/views/tabs/index.vue'),
-    }, {
-      path: 'collapse',
-      name: 'Collapse',
-      component: () => import('@/views/tabs/collapse.vue'),
-    }]
-  },
 
 ];
 
@@ -47,6 +33,7 @@ const router = createRouter({
 
 router.beforeEach((_to, _from) => {
 
+  console.log(router.getRoutes)
   // 路由守卫逻辑
   // 通过 return turn;
   // 不通过 return false;

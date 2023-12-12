@@ -1,6 +1,6 @@
 <template>
     <div class="app-continer">
-        <router-view :key="key"/>
+        <router-view :key="key" />
     </div>
 </template>
 <script setup lang="ts">
@@ -10,7 +10,7 @@ const $router = useRouter()
 const key = ref($router.currentRoute.value.fullPath)
 </script>
 <style scoped lang="scss">
-    .app-continer{
-        padding: 20px;
-    }
+.app-continer {
+    padding: 20px 0px;
+}
 </style>

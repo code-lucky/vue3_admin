@@ -7,9 +7,9 @@ import 'element-plus/dist/index.css'
 import * as ElementPlusIconsVue from '@element-plus/icons-vue'
 //引用router
 import router from "@/router"
+import '@/permission'
 //导入pinia状态管理
 import store from './store/index'
-import '@/permission'
 import './styles/style.scss'
 
 const app = createApp(App)

@@ -1,7 +1,10 @@
 <template>
     <div class="navbar">
-        <div class="navbar-folding">
-            <el-icon :size="24">
+        <div class="navbar-folding" @click="changeCollapse">
+            <el-icon :size="24" v-if="isCollapse">
+                <Expand />
+            </el-icon>
+            <el-icon :size="24" v-else>
                 <Fold />
             </el-icon>
         </div>
@@ -24,6 +27,7 @@
 <script setup lang="ts">
 import { reactive, ref, toRefs } from "vue";
 import Breadcrumb from "./Breadcrumb/index.vue";
+import eventBus from "@/utils/event-bus";
 const state = reactive({
     squareUrl:
         'https://cube.elemecdn.com/9/c2/f0ee8a3c7c9638a54940382568c9dpng.png',
@@ -34,6 +38,12 @@ const logout = () => {
     window.localStorage.clear()
     window.location.reload()
 }
+const isCollapse = ref(false)
+const changeCollapse = () => {
+    isCollapse.value = !isCollapse.value
+    eventBus.$emit('changeCollapse', () => { })
+}
+
 const { squareUrl } = toRefs(state)
 </script>
 <style scoped lang="scss">
@@ -73,4 +83,4 @@ const { squareUrl } = toRefs(state)
     display: flex;
     align-items: center;
 }
-</style>
+</style>@/utils/eventBus

@@ -1,6 +1,5 @@
 import { createRouter, createWebHashHistory, RouteRecordRaw } from "vue-router";
 import Layout from '@/layout/index.vue'
-import { getMenuTree } from '@/api/menu'
 const routes: Array<RouteRecordRaw> = [
   {
     path: "/login",
@@ -11,15 +10,15 @@ const routes: Array<RouteRecordRaw> = [
   {
     path: "/",
     redirect: '/dashboard',
-    name: 'dashboard',
+    name: '首页',
     component: Layout,
+    icon: 'House',
     children: [{
       path: 'dashboard',
-      name: 'Dashboard1',
+      name: '首页',
       component: () => import('@/views/dashboard/index.vue'),
     }]
   },
-
 ];
 
 const router = createRouter({
@@ -31,9 +30,7 @@ const router = createRouter({
   },
 });
 
-router.beforeEach((_to, _from) => {
-
-  console.log(router.getRoutes)
+router.beforeEach(async (_to, _from) => {
   // 路由守卫逻辑
   // 通过 return turn;
   // 不通过 return false;

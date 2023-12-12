@@ -6,7 +6,13 @@
   <el-button type="primary" class="mb-20" @click="isDialog = true">新增</el-button>
   <el-table :data="tableList" border style="width: 100%" row-key="id">
     <el-table-column prop="name" label="菜单名称" />
-    <el-table-column prop="icon" label="图标" />
+    <el-table-column prop="icon" label="图标">
+      <template #default="scope">
+        <el-icon :size="20">
+          <component :is="scope.row.icon" />
+        </el-icon>
+      </template>
+    </el-table-column>
     <el-table-column prop="sort" label="排序" />
     <el-table-column prop="perms" label="权限标识" />
     <el-table-column prop="component" label="组件路径" />

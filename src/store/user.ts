@@ -4,12 +4,14 @@ import { getMenuList } from '@/api/menu'
 import Layout from '@/layout/index.vue'
 import { RouteRecordRaw } from "vue-router"
 import router from "@/router"
+import subView from "@/views/components/subView.vue"
 const modules = import.meta.glob('@/views/*/*.vue')
 export const userStore = defineStore('userInfo', {
 	state: () => {
 		return {
 			userInfo: {},
-			menuList: [] as Array<RouteRecordRaw>
+			menuList: [] as Array<RouteRecordRaw>,
+			hasRoutes: false as Boolean
 		}
 	},
 	getters: {
@@ -19,6 +21,9 @@ export const userStore = defineStore('userInfo', {
 		getMenuList: (state) => {
 			const data: string = localStorage.getItem('menu-list') || '[]'
 			return state.menuList.length > 0 ? state.menuList : JSON.parse(data)
+		},
+		getHasRoutes: (state) => {
+			return state.hasRoutes
 		}
 	},
 	// action 支持 async/await 的语法，可以自行添加使用
@@ -31,27 +36,17 @@ export const userStore = defineStore('userInfo', {
 		setToken(token: any) {
 			catchs.setStorage('TOKEN', token)
 		},
+		setHasRoutes(val: Boolean) {
+			this.hasRoutes = val
+		},
 		async setRoutes() {
 			const data: any = await getMenuList()
-			const routes = data.data
+			const routes = await this.toTree(data.data, 0)
+			this.menuList = routes
 			routes.forEach((item: any) => {
-				const result = {
-					path: item.component,
-					redirect: item.component,
-					name: item.name,
-					component: item.pid === 0 ? Layout : modules[`../views${item.component}.vue`],
-					children: []
-				}
-				router.addRoute(result)
+				router.addRoute(item)
 			})
-			// const resultMenu: any = await this.toTree(data.data, 0)
-			// this.menuList = resultMenu
-			// const routes: RouteRecordRaw[] = resultMenu
-			// routes.forEach((item => {
-			// 	router.addRoute(item)
-			// }))
-			// console.log('router===>', router.options.routes)
-			// localStorage.setItem('menu-list', JSON.stringify(resultMenu))
+			localStorage.setItem('menu-list', JSON.stringify(routes))
 		},
 		async toTree(treeList: any, pid: number) {
 			const arr: any = []
@@ -59,14 +54,17 @@ export const userStore = defineStore('userInfo', {
 				if (item.pid === pid) {
 					const result = {
 						path: item.component,
-						redirect: item.component,
+						redirect: pid === 0 ? item.component : undefined,
 						name: item.name,
 						component: item.pid === 0 ? Layout : modules[`../views${item.component}.vue`],
+						hidden: item.isShow !== 0 ? true : false,
+						icon: item.icon ? item.icon : '',
 						children: []
 					}
 					const children = await this.toTree(treeList, item.id)
 					if (children.length > 0) {
 						result.children = children
+						result.component = item.pid === 0 ? Layout : subView
 					}
 					arr.push(result)
 				}

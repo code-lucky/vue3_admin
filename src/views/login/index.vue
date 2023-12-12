@@ -3,43 +3,27 @@
     <div class="continer">
         <div class="content">
             <div class="login-title">Login</div>
-            <el-form
-                ref="ruleFormRef"
-                :model="ruleForm"
-                :rules="rules"
-                class="content-form"
-            >
+            <el-form ref="ruleFormRef" :model="ruleForm" :rules="rules" class="content-form">
                 <el-form-item prop="userName">
-                    <el-input 
-                        v-model="ruleForm.userName" 
-                        type="text" 
-                        placeholder="请输入用户名" 
-                        autocomplete="off" 
-                    />
+                    <el-input v-model="ruleForm.userName" type="text" placeholder="请输入用户名" autocomplete="off" />
                 </el-form-item>
                 <el-form-item prop="password" style="margin-top:40px;position: relative;">
-                    <el-input
-                        v-model="ruleForm.password"
-                        :type="passwordType"
-                        autocomplete="off"
-                        placeholder="请输入密码"
-                        maxlength="60"
-                    />
+                    <el-input v-model="ruleForm.password" :type="passwordType" autocomplete="off" placeholder="请输入密码"
+                        maxlength="60" />
                     <el-icon :size="18" class="check_password" @click="setPasswordType">
-                        <Hide v-if="passwordType=='password'"/>
-                        <View v-else/>
+                        <Hide v-if="passwordType == 'password'" />
+                        <View v-else />
                     </el-icon>
                 </el-form-item>
                 <el-form-item>
-                    <el-button type="primary" @click="submitForm(ruleFormRef)" class="content-btn">登陆</el-button
-                    >
+                    <el-button type="primary" @click="submitForm(ruleFormRef)" class="content-btn">登陆</el-button>
                 </el-form-item>
             </el-form>
         </div>
     </div>
 </template>
 <script lang="ts" setup>
-import {onMounted, onUnmounted, reactive, ref } from 'vue'
+import { onMounted, onUnmounted, reactive, ref } from 'vue'
 import { ElMessage, FormInstance } from 'element-plus'
 import { login } from '@/api/user'
 import { userStore } from '@/store/user'
@@ -61,7 +45,7 @@ const validateUser = (rule: Object, value: string, callback: any) => {
 const validatePassword = (rule: Object, value: string, callback: any) => {
     if (value === '') {
         callback(new Error('请输入密码'))
-    } else if (value.length<6) {
+    } else if (value.length < 6) {
         callback(new Error("密码不能小于6位"))
     } else {
         callback()
@@ -79,22 +63,21 @@ const rules = reactive({
 const passwordType = ref('password')
 
 
-const setPasswordType = () =>{
-    passwordType.value = passwordType.value === 'password' ? 'text': 'password'
+const setPasswordType = () => {
+    passwordType.value = passwordType.value === 'password' ? 'text' : 'password'
 }
 const submitForm = (formEl: FormInstance | undefined) => {
     if (!formEl) return
-        formEl.validate((valid) => {
+    formEl.validate((valid) => {
         if (valid) {
             //开始执行登陆
-            login(ruleForm).then((res:any)=>{
+            login(ruleForm).then((res: any) => {
                 const data = res
-                console.log(data)
-                if(data.code==200){
+                if (data.code == 200) {
                     store.setUserInfo(data.data)
                     ElMessage.success(data.message)
-                    router.push({ path: '/'})
-                }else{
+                    router.push({ path: '/' })
+                } else {
                     ElMessage.error(data.message)
                 }
             })
@@ -104,8 +87,8 @@ const submitForm = (formEl: FormInstance | undefined) => {
     })
 }
 
-const keyDown = (e:any) =>{
-    if(e.keyCode == 13){
+const keyDown = (e: any) => {
+    if (e.keyCode == 13) {
         submitForm(ruleFormRef.value)
     }
 }
@@ -119,15 +102,21 @@ onUnmounted(() => {
 })
 </script>
 <style scoped lang="scss">
-$bg:#2d3a4b;
-*{padding: 0;margin: 0;}
-.continer{
+$bg: #2d3a4b;
+
+* {
+    padding: 0;
+    margin: 0;
+}
+
+.continer {
     min-width: 100%;
     height: 100%;
     background-color: $bg;
     overflow: hidden;
     position: relative;
-    .content{
+
+    .content {
         width: 30%;
         height: 400px;
         background-color: #fff;
@@ -137,24 +126,28 @@ $bg:#2d3a4b;
         right: 10%;
         margin: auto 0;
         border-radius: 10px;
-        .login-title{
+
+        .login-title {
             text-align: center;
             padding: 30px;
             font-size: 32px;
             font-weight: 800;
         }
-        .content-form{
+
+        .content-form {
             width: 80%;
             position: relative;
             margin: 0 auto;
-            .content-btn{
+
+            .content-btn {
                 width: 100px;
                 height: 40px;
                 position: relative;
                 top: 50px;
                 margin: auto;
             }
-            .check_password{
+
+            .check_password {
                 position: absolute;
                 right: 10px;
                 cursor: pointer;
@@ -162,7 +155,8 @@ $bg:#2d3a4b;
         }
     }
 }
-.el-input{
+
+.el-input {
     height: 47px;
 }
 </style>

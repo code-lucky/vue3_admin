@@ -20,7 +20,7 @@ const isIndexRoute = () => {
 }
 isIndexRoute()
 watch(() => $route.matched, (newRoute: any, oldRoute: any) => {
-    list.values = [{ path: '/dashboard', name: 'dashboard' }]
+    list.values = [{ path: '/dashboard', name: '首页' }]
     arr.values = newRoute
     if (arr.values.filter((res: any) => res.path == list.values[0].path).length > 0) {
     } else {

@@ -1,10 +1,21 @@
 <template>
-    <div class="continer">
-        <Sidebar />
+    <div class="common-layout">
+        <el-container>
+            <Sidebar />
+            <el-container>
+                <el-header style="width: 100%;">
+                    <nav-bar />
+                </el-header>
+                <el-main>
+                    <AppMain />
+                </el-main>
+            </el-container>
+        </el-container>
+        <!-- <Sidebar />
         <div class="continer-right">
             <nav-bar />
             <AppMain />
-        </div>
+        </div> -->
     </div>
 </template>
 <script setup lang="ts">
@@ -14,11 +25,8 @@ import AppMain from './components/AppMain.vue';
 
 </script>
 <style lang="scss" scoped>
-.continer {
-    display: flex;
-
-    &-right {
-        width: 100%;
-    }
+.el-header {
+    --el-header-padding: 0 0px;
+    --el-header-height: 30px;
 }
 </style>

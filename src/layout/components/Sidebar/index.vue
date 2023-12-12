@@ -22,9 +22,8 @@ const activeMenu = () => {
 const isCollapse = ref(false)
 onMounted(() => {
   routes.value = routes.value.concat(store.getMenuList)
-  console.log('routes-value', routes.value)
-  eventBus.$on('changeCollapse', () => {
-    isCollapse.value = !isCollapse.value
+  eventBus.$on('changeCollapse', (val: boolean) => {
+    isCollapse.value = val
   })
 })
 </script>

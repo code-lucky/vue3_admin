@@ -54,7 +54,6 @@ const isShowChild = (item: any): Boolean => {
         return true
     }
     if (arr.length == 1) {
-        console.log('arr=====>', arr)
         return true
     }
     return false

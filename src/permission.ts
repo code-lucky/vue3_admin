@@ -4,6 +4,7 @@ import { userStore } from "./store/user";
 import catchs from "./utils/cache";
 import NProgress from 'nprogress'
 import 'nprogress/nprogress.css'
+import eventBus from "./utils/event-bus";
 const store = userStore(pinia)
 const whiteList = ['/login', '/404']
 router.beforeEach(async (to, form, next) => {
@@ -27,6 +28,8 @@ router.beforeEach(async (to, form, next) => {
                 next({ ...to })
                 store.setHasRoutes(true)
             } else {
+                const curretRouter = to
+                eventBus.$emit('route-list', curretRouter)
                 next()
             }
             NProgress.done()

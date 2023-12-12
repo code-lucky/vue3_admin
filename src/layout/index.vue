@@ -11,11 +11,6 @@
                 </el-main>
             </el-container>
         </el-container>
-        <!-- <Sidebar />
-        <div class="continer-right">
-            <nav-bar />
-            <AppMain />
-        </div> -->
     </div>
 </template>
 <script setup lang="ts">
@@ -27,6 +22,10 @@ import AppMain from './components/AppMain.vue';
 <style lang="scss" scoped>
 .el-header {
     --el-header-padding: 0 0px;
-    --el-header-height: 30px;
+    --el-header-height: 90px;
+}
+
+.common-layout {
+    background-color: rgb(250, 250, 250);
 }
 </style>

@@ -1,5 +1,5 @@
 <template>
-  <el-menu style="height: 100vh;" class="el-menu-vertical" :collapse="isCollapse" background-color="#545c64"
+  <el-menu style="height: 100vh;" class="el-menu-vertical" :collapse="isCollapse" background-color="#2d3a4b"
     text-color="#fff" :router="true" active-text-color="#ffd04b" unique-opened="true" :default-active="activeMenu()">
     <SidebarItem v-for="(route, idx) in routes" :key="idx" :item="route" :base-path="route.path" />
   </el-menu>

@@ -115,16 +115,14 @@ $bg: #2d3a4b;
     background-color: $bg;
     overflow: hidden;
     position: relative;
+    display: flex;
+    align-items: center;
+    justify-content: center;
 
     .content {
-        width: 30%;
+        width: 400px;
         height: 400px;
         background-color: #fff;
-        position: absolute;
-        top: 0;
-        bottom: 0;
-        right: 10%;
-        margin: auto 0;
         border-radius: 10px;
 
         .login-title {

@@ -87,7 +87,6 @@ const delElseRoute = (data: routeType) => {
             path: '/dashboard'
         }
     ]
-    console.log('tag', data)
     routes.value.push(data)
 }
 
@@ -109,7 +108,6 @@ const { squareUrl } = toRefs(state)
 
 onMounted(() => {
     addRouteList()
-    console.log('document.body.clientWidth', document.body.clientWidth)
     if (document.body.clientWidth < 500) {
         isCollapse.value = true
         eventBus.$emit('changeCollapse', isCollapse.value)
@@ -120,7 +118,6 @@ onMounted(() => {
 })
 
 watch(screenWidth, (newVal, oldVal) => {
-    console.log(newVal)
     if (newVal > 500) {
         isCollapse.value = false
     } else {

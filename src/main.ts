@@ -11,7 +11,6 @@ import '@/permission'
 //导入pinia状态管理
 import store from './store/index'
 import './styles/style.scss'
-import i18n from '@/i18n'
 
 const app = createApp(App)
 // 注册全局icon
@@ -21,5 +20,4 @@ for (const [key, component] of Object.entries(ElementPlusIconsVue)) {
 app.use(ElementPlus)
 app.use(router)
 app.use(store)
-app.use(i18n)
 app.mount('#app')

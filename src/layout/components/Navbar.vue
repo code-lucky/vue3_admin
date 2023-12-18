@@ -27,13 +27,13 @@
         <el-dropdown v-for="(i, idx) in routes" trigger="contextmenu">
             <el-tag type="info" :key="i.name" class="mx-1 navigation-item" :closable="i.name !== '首页'"
                 :disable-transitions="false" size="large" @click="goRoute(i.path)" @close="delRoute(i)">{{
-                    $t(`label_page.${i.name}`)
+                    i.name
                 }}</el-tag>
             <template #dropdown>
                 <el-dropdown-menu>
-                    <el-dropdown-item @click="delRoute(i)">{{ $t('global.closeTab') }}</el-dropdown-item>
-                    <el-dropdown-item @click="delElseRoute(i)">{{ $t('global.closeOtherTabs') }}</el-dropdown-item>
-                    <el-dropdown-item @click="delRightRoute(idx)">{{ $t('global.closeRightTabs') }}</el-dropdown-item>
+                    <el-dropdown-item @click="delRoute(i)">关闭</el-dropdown-item>
+                    <el-dropdown-item @click="delElseRoute(i)">关闭其他标签页</el-dropdown-item>
+                    <el-dropdown-item @click="delRightRoute(idx)">关闭右侧标签页</el-dropdown-item>
                 </el-dropdown-menu>
             </template>
         </el-dropdown>

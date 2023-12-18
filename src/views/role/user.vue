@@ -1,9 +1,9 @@
 <template>
   <div class="flex mb-20">
     <el-input v-model="userName" placeholder="请输入用户名称" clearable class="w-300" />
-    <el-button class="ml-10" type="primary" plain @click="findUserListByName">{{ $t('permission_user.query') }}</el-button>
+    <el-button class="ml-10" type="primary" plain @click="findUserListByName">查询</el-button>
   </div>
-  <el-button type="primary" class="mb-20" @click="isDialog = true">{{ $t('permission_user.newAdmin') }}</el-button>
+  <el-button type="primary" class="mb-20" @click="isDialog = true">添加管理员</el-button>
   <el-table :data="userList" border style="width: 100%">
     <el-table-column prop="id" label="用户编号" />
     <el-table-column prop="userName" label="用户昵称" />

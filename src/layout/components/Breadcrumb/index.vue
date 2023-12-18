@@ -1,7 +1,7 @@
 <template>
     <el-breadcrumb separator="/">
         <el-breadcrumb-item v-for="(route, idx) in list.values" :to="{ path: `${route.path}` }" :key="idx"><span
-                class="navbar-bread-pointer">{{ $t(`label_page.${route.name}`) }}</span></el-breadcrumb-item>
+                class="navbar-bread-pointer">{{ route.name }}</span></el-breadcrumb-item>
     </el-breadcrumb>
 </template>
 <script lang="ts" setup>

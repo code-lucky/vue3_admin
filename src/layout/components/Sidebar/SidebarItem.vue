@@ -7,7 +7,7 @@
                     <component :is="result.icon" />
                 </el-icon>
                 <template #title>
-                    <span>{{ $t(`label_page.${result.name}`) }}</span>
+                    <span>{{ result.name }}</span>
                 </template>
             </el-menu-item>
         </template>
@@ -17,7 +17,7 @@
                 <el-icon v-if="result.icon" :size="20">
                     <component :is="result.icon" />
                 </el-icon>
-                <span>{{ $t(`label_page.${result.name}`) }}</span>
+                <span>{{ result.name }}</span>
             </template>
             <template v-if="result.children.length > 0 && result.children">
                 <SidebarItem v-for="(route, idx) in result.children || []" :key="idx" :item="route"

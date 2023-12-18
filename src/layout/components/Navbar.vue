@@ -12,7 +12,16 @@
             <Breadcrumb />
         </div>
         <div class="navbar-info">
-            <el-dropdown>
+            <el-dropdown class="navbar-info-right" @click="changeLanguage">
+                <img class="navbar-info-right-img" src="../../assets/language.svg"/>
+                <template #dropdown>
+                    <el-dropdown-menu>
+                        <el-dropdown-item @click="changeLanguage('zh')" :disabled="language=='zh'">简体中文</el-dropdown-item>
+                        <el-dropdown-item @click="changeLanguage('en')" command="en" :disabled="language=='en'">English</el-dropdown-item>
+                    </el-dropdown-menu>
+                </template>
+            </el-dropdown>
+            <el-dropdown class="navbar-info-right">
                 <el-avatar :src="squareUrl" />
                 <template #dropdown>
                     <el-dropdown-menu>
@@ -60,6 +69,14 @@ const routes = ref([{
     name: '首页',
     path: '/dashboard'
 }])
+
+const language = ref(localStorage.getItem('lang')||'zh')
+
+const changeLanguage = (val: string) =>{
+    language.value = val
+    localStorage.setItem('lang', val)
+    window.location.reload()
+}
 
 const addRouteList = () => {
     eventBus.$on('route-list', (data: any) => {
@@ -149,7 +166,13 @@ watch(screenWidth, (newVal, oldVal) => {
     }
 
     &-info {
-        width: 60px;
+        display: flex;
+        &-right{
+            margin-right: 20px;
+            &-img{
+                width: 28px;
+            }
+        }
     }
 }
 

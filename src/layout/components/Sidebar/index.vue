@@ -30,7 +30,7 @@ onMounted(() => {
   
 <style scoped lang="scss">
 .el-menu-vertical:not(.el-menu--collapse) {
-  width: 200px;
+  min-width: 260px;
   height: calc(100vh);
 }
 </style>

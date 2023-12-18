@@ -81,12 +81,7 @@ const delRoute = (data: routeType) => {
 }
 
 const delElseRoute = (data: routeType) => {
-    routes.value = [
-        {
-            name: '首页',
-            path: '/dashboard'
-        }
-    ]
+    routes.value = []
     routes.value.push(data)
 }
 

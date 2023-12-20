@@ -12,7 +12,13 @@
             <Breadcrumb />
         </div>
         <div class="navbar-info">
-            <el-dropdown>
+            <div class="navbar-info-right" v-if="!isFull" @click="fullScreen">
+                <img class="navbar-info-right-img" src="../../assets/screen-full.svg" />
+            </div>
+            <div class="navbar-info-right" v-else @click="exitFullScreen">
+                <img class="navbar-info-right-img" src="../../assets/exit-fullscreen.svg" />
+            </div>
+            <el-dropdown class="navbar-info-right">
                 <el-avatar :src="squareUrl" />
                 <template #dropdown>
                     <el-dropdown-menu>
@@ -40,7 +46,7 @@
     </div>
 </template>
 <script setup lang="ts">
-import { onMounted, reactive, ref, toRefs, watch } from "vue";
+import { onMounted, onUnmounted, reactive, ref, toRefs, watch } from "vue";
 import Breadcrumb from "./Breadcrumb/index.vue";
 import eventBus from "@/utils/event-bus";
 import router from "@/router";
@@ -60,6 +66,20 @@ const routes = ref([{
     name: '首页',
     path: '/dashboard'
 }])
+
+const isFull = ref(false)
+
+const fullScreen = () => {
+    if (document.fullscreenElement !== null) {
+        document.exitFullscreen()
+    }
+    document.documentElement.requestFullscreen();
+    isFull.value = true
+}
+const exitFullScreen = () => {
+    document.exitFullscreen()
+    isFull.value = false
+}
 
 const addRouteList = () => {
     eventBus.$on('route-list', (data: any) => {
@@ -102,6 +122,14 @@ const changeCollapse = () => {
 
 const { squareUrl } = toRefs(state)
 
+const keyDown = (e: any) => {
+    if (e.keyCode == 27) {
+        console.log(27)
+        isFull.value = false
+        console.log(isFull.value)
+    }
+}
+
 onMounted(() => {
     addRouteList()
     if (document.body.clientWidth < 500) {
@@ -111,6 +139,11 @@ onMounted(() => {
     window.onresize = () => (() => {
         screenWidth.value = document.body.clientWidth;
     })()
+    window.addEventListener('keydown', keyDown)
+})
+
+onUnmounted(() => {
+    window.removeEventListener('keydown', keyDown, false)
 })
 
 watch(screenWidth, (newVal, oldVal) => {
@@ -149,7 +182,24 @@ watch(screenWidth, (newVal, oldVal) => {
     }
 
     &-info {
-        width: 60px;
+        display: flex;
+
+        &-right {
+            display: flex;
+            align-items: center;
+            margin-right: 10px;
+            padding: 5px;
+
+            &-img {
+                width: 20px;
+                height: 20px;
+            }
+        }
+
+        &-right:hover {
+            background-color: #eee;
+            cursor: pointer;
+        }
     }
 }
 

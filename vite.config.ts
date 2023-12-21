@@ -4,6 +4,7 @@ import { viteMockServe } from 'vite-plugin-mock'
 import { resolve } from 'path'
 // https://vitejs.dev/config/
 export default defineConfig({
+  base:'./',
   plugins: [
     vue(),
     //配置mock
@@ -23,7 +24,7 @@ export default defineConfig({
           //  指定打包输出的js文件名称
           chunkFileNames: "js/[name]-[hash].js",
           entryFileNames: "js/[name]-[hash].js",
-          assetFileNames: "[ext]/[name]-[hash].[ext]"
+          // assetFileNames: "[ext]/[name]-[hash].[ext]"
           //设置css和图片的文件夹名称，但是有弊端，css设置的背景图片访问不到,路径是错误的
       }
     }

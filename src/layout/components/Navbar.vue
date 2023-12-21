@@ -13,10 +13,10 @@
         </div>
         <div class="navbar-info">
             <div class="navbar-info-right" v-if="!isFull" @click="fullScreen">
-                <img class="navbar-info-right-img" src="@/assets/screen-full.svg" />
+                <img class="navbar-info-right-img" src="../../assets/screen-full.svg" />
             </div>
             <div class="navbar-info-right" v-else @click="exitFullScreen">
-                <img class="navbar-info-right-img" src="@/assets/exit-fullscreen.svg" />
+                <img class="navbar-info-right-img" src="../../assets/exit-fullscreen.svg" />
             </div>
             <el-dropdown class="navbar-info-right">
                 <el-avatar :src="squareUrl" />

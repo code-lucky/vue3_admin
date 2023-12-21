@@ -11,7 +11,7 @@ export default defineConfig({
     viteMockServe({
       supportTs:false,
       logger: false,
-      mockPath: "./src/mock/"
+      mockPath: "./mock/"
     })
   ],
   build: {
@@ -47,7 +47,7 @@ export default defineConfig({
   
   server: {
     host: '0.0.0.0',
-    port: 3003,
+    port: 3001,
     hmr: true,
     proxy: {
       // 选项写法

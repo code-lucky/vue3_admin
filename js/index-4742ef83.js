@@ -1,0 +1,1 @@
+const e=e=>{const t=new Date(e),$=t.getFullYear(),n=t.getMonth()+1,g=n<10?`0${n}`:n,o=t.getDate(),s=o<10?`0${o}`:o,r=t.getHours(),a=r<10?`0${r}`:r,u=t.getMinutes(),c=u<10?`0${u}`:u,l=t.getSeconds();return`${$}-${g}-${s} ${a}:${c}:${l<10?`0${l}`:l}`};export{e as f};

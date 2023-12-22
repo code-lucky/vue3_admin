@@ -52,7 +52,7 @@ export default defineConfig({
     proxy: {
       // 选项写法
       '/api': {
-        target: 'http://jsonplaceholder.typicode.com',
+        target: 'https://api.server-api.cn',
         changeOrigin: true,
         rewrite: (path) => path.replace(/^\/api/, '')
       }

@@ -10,9 +10,9 @@ export const request = (options: any) => {
     // create an axios instance
     const service = axios.create({
       // baseURL: process.env.BASE_API, // api 的 base_url
-      baseURL:'https://api.server-api.cn',
+      // baseURL:'https://api.server-api.cn',
       // baseURL:'http://124.222.178.74:3000',
-      // baseURL: '/api',
+      baseURL: '/api',
       timeout: 80000 // request timeout
     })
 

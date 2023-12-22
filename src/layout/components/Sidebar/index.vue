@@ -1,8 +1,10 @@
 <template>
-  <el-menu style="height: 100vh;" class="el-menu-vertical" :collapse="isCollapse" background-color="#2d3a4b"
-    text-color="#fff" :router="true" active-text-color="#ffd04b" unique-opened="true" :default-active="activeMenu()">
-    <SidebarItem v-for="(route, idx) in routes" :key="idx" :item="route" :base-path="route.path" />
-  </el-menu>
+  <div class="sidebar">
+    <el-menu style="height: 100%;" class="el-menu-vertical" :collapse="isCollapse" background-color="#2d3a4b"
+      text-color="#fff" :router="true" active-text-color="#ffd04b" unique-opened="true" :default-active="activeMenu()">
+      <SidebarItem v-for="(route, idx) in routes" :key="idx" :item="route" :base-path="route.path" />
+    </el-menu>
+  </div>
 </template>
   
 <script lang="ts" setup>
@@ -29,6 +31,9 @@ onMounted(() => {
 </script>
   
 <style scoped lang="scss">
+.sidebar{
+  // height: 100vh;
+}
 .el-menu-vertical:not(.el-menu--collapse) {
   width: 260px;
   height: calc(100vh);

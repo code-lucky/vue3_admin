@@ -1,5 +1,5 @@
 <template>
-    <div class="app-continer">
+    <div class="content">
         <router-view :key="key" />
     </div>
 </template>
@@ -10,9 +10,7 @@ const $router = useRouter()
 const key = ref($router.currentRoute.value.fullPath)
 </script>
 <style scoped lang="scss">
-.app-continer {
-    padding: 20px;
-    background-color: #fff;
+.content {
     width: 100%;
     height: 100%;
     border-radius: 10px;

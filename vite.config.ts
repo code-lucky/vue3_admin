@@ -52,7 +52,7 @@ export default defineConfig({
     proxy: {
       // 选项写法
       '/api': {
-        target: 'https://api.server-api.cn',
+        target: 'http://127.0.0.1:3000',
         changeOrigin: true,
         rewrite: (path) => path.replace(/^\/api/, '')
       }

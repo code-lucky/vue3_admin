@@ -3,7 +3,7 @@
         <el-container>
             <Sidebar />
             <el-container>
-                <el-header style="width: 100%;">
+                <el-header>
                     <nav-bar />
                 </el-header>
                 <el-main>

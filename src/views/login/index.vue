@@ -2,7 +2,7 @@
     <!-- login页面 -->
     <div class="continer">
         <div class="content">
-            <div class="login-title">Login</div>
+            <div class="login-title" :class="[isPc ? 'isPc' : 'isMobile']">登录</div>
             <el-form ref="ruleFormRef" :model="ruleForm" :rules="rules" class="content-form">
                 <el-form-item prop="userName">
                     <el-input v-model="ruleForm.userName" type="text" placeholder="请输入用户名" autocomplete="off" />
@@ -31,6 +31,7 @@ import { useRouter } from 'vue-router';
 const store = userStore()
 const ruleFormRef = ref<FormInstance>()
 const router = useRouter()
+const isPc = ref(true)
 const validateUser = (rule: Object, value: string, callback: any) => {
     if (value === '') {
         callback(new Error('用户名不能为空'))
@@ -95,6 +96,16 @@ const keyDown = (e: any) => {
 
 onMounted(() => {
     window.addEventListener('keydown', keyDown)
+    if (document.body.clientWidth < 500) {
+        isPc.value = false
+    }
+    window.onresize = () => (() => {
+        if (document.body.clientWidth < 500) {
+            isPc.value = false
+        } else {
+            isPc.value = true
+        }
+    })()
 })
 
 onUnmounted(() => {
@@ -118,9 +129,11 @@ $bg: #2d3a4b;
     display: flex;
     align-items: center;
     justify-content: center;
+    background-image: url('../../assets/bg.svg');
+    background-repeat: no-repeat;
+    background-size: 100% 100%;
 
     .content {
-        width: 400px;
         height: 400px;
         background-color: #fff;
         border-radius: 10px;
@@ -156,5 +169,13 @@ $bg: #2d3a4b;
 
 .el-input {
     height: 47px;
+}
+
+.isPc {
+    width: 400px;
+}
+
+.isMobile {
+    width: 300px;
 }
 </style>

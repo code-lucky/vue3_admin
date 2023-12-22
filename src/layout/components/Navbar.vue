@@ -70,15 +70,39 @@ const routes = ref([{
 const isFull = ref(false)
 
 const fullScreen = () => {
-    if (document.fullscreenElement !== null) {
-        document.exitFullscreen()
-    }
-    document.documentElement.requestFullscreen();
-    isFull.value = true
+    isFullScreen()
+    isFull.value = !isFull.value
 }
 const exitFullScreen = () => {
-    document.exitFullscreen()
-    isFull.value = false
+    isFullScreen()
+    isFull.value = !isFull.value
+}
+
+const isFullScreen = () =>{
+    let el: any
+    el = document.documentElement
+    if (isFull.value) {
+        if (document.exitFullscreen) {
+            document.exitFullscreen();
+        } else if (el.webkitCancelFullScreen) {
+            el.webkitCancelFullScreen();
+        } else if (el.mozCancelFullScreen) {
+            el.mozCancelFullScreen();
+        } else if (el.msExitFullscreen) {
+            el.msExitFullscreen();
+        }
+    } else {
+        if (el.requestFullscreen) {
+            el.requestFullscreen();
+        } else if (el.webkitRequestFullScreen) {
+            el.webkitRequestFullScreen();
+        } else if (el.mozRequestFullScreen) {
+            el.mozRequestFullScreen();
+        } else if (el.msRequestFullscreen) {
+            // IE11
+            el.msRequestFullscreen();
+        }
+    }
 }
 
 const addRouteList = () => {
@@ -124,8 +148,23 @@ const { squareUrl } = toRefs(state)
 
 const keyDown = (e: any) => {
     if (e.keyCode == 27) {
-        isFull.value = false
+        
     }
+}
+
+const checkFull = () => {
+    //判断浏览器是否处于全屏状态 （需要考虑兼容问题）
+    //火狐浏览器
+    let el: any;
+    el = document.documentElement;
+    var isFull = el.mozFullScreen ||
+        el.fullScreen ||
+        //谷歌浏览器及Webkit内核浏览器
+        el.webkitIsFullScreen ||
+        el.webkitRequestFullScreen ||
+        el.mozRequestFullScreen ||
+        el.msFullscreenEnabled
+    return !!isFull;
 }
 
 onMounted(() => {
@@ -136,6 +175,9 @@ onMounted(() => {
     }
     window.onresize = () => (() => {
         screenWidth.value = document.body.clientWidth;
+        if(checkFull()){
+            console.log('退出全屏')
+        }
     })()
     window.addEventListener('keydown', keyDown)
 })

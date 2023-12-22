@@ -89,7 +89,6 @@ const submitParam = ref<AddMenuParams>({
 const menuId = ref('')
 
 const handleChange = () => {
-    console.log(submitParam.value.sort)
 }
 
 const cancel = () => {

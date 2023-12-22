@@ -73,7 +73,6 @@ const submitForm = (formEl: FormInstance | undefined) => {
             //开始执行登陆
             login(ruleForm).then((res: any) => {
                 const data = res
-                console.log(data)
                 if (data.code == 200) {
                     store.setUserInfo(data.data)
                     ElMessage.success(data.message)

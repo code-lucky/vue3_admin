@@ -71,7 +71,6 @@ const cancel = () => {
 }
 
 const addUser = (val: any) => {
-  console.log('val====>', val)
 }
 
 const editUser = () => {

@@ -124,9 +124,7 @@ const { squareUrl } = toRefs(state)
 
 const keyDown = (e: any) => {
     if (e.keyCode == 27) {
-        console.log(27)
         isFull.value = false
-        console.log(isFull.value)
     }
 }
 

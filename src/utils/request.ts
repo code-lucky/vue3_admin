@@ -38,9 +38,7 @@ export const request = (options: any) => {
     // response interceptor
     service.interceptors.response.use(
       (response: IResponse | any) => {
-        console.log(response.data.data)
         if (response.data.code === 200) {
-          console.log(response.data)
           return response.data
         } else {
           if (response.data.data === '用户未登录') {

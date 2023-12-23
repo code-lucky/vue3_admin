@@ -18,7 +18,7 @@ const init = () => {
         },
         grid: {
             left: '4%',
-            right: '4%',
+            right: '6%',
             bottom: '3%',
             containLabel: true
         },
@@ -78,9 +78,10 @@ onMounted(() => {
 <style scoped>
 .main {
     width: 100%;
-    height: 400px;
+    height: 450px;
     padding: 0;
     margin: 0;
     background-color: #fff;
     border-radius: 10px;
+    padding: 20px;
 }</style>

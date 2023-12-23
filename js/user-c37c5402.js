@@ -1,1 +1,0 @@
-import{l as e}from"./index-e471099d.js";function r(r){return e({url:"/user/userLogin",method:"post",data:r})}function t(r){return e({url:"/user/getUserList"+(r?"?userName="+r:""),method:"get"})}export{t as g,r as l};

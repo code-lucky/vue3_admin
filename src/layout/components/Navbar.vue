@@ -12,11 +12,8 @@
             <Breadcrumb />
         </div>
         <div class="navbar-info">
-            <div class="navbar-info-right" v-if="!isFull" @click="fullScreen">
-                <img class="navbar-info-right-img" src="../../assets/screen-full.svg" />
-            </div>
-            <div class="navbar-info-right" v-else @click="exitFullScreen">
-                <img class="navbar-info-right-img" src="../../assets/exit-fullscreen.svg" />
+            <div class="navbar-info-right" @click="isFullScreen">
+                <img class="navbar-info-right-img" :src="isFull?`/src/assets/exit-fullscreen.svg`:`/src/assets/screen-full.svg`" />
             </div>
             <el-dropdown class="navbar-info-right">
                 <el-avatar :src="squareUrl" />
@@ -69,16 +66,7 @@ const routes = ref([{
 
 const isFull = ref(false)
 
-const fullScreen = () => {
-    isFullScreen()
-    isFull.value = !isFull.value
-}
-const exitFullScreen = () => {
-    isFullScreen()
-    isFull.value = !isFull.value
-}
-
-const isFullScreen = () =>{
+const isFullScreen = () => {
     let el: any
     el = document.documentElement
     if (isFull.value) {
@@ -148,7 +136,7 @@ const { squareUrl } = toRefs(state)
 
 const keyDown = (e: any) => {
     if (e.keyCode == 27) {
-        
+
     }
 }
 
@@ -164,7 +152,10 @@ const checkFull = () => {
         el.webkitRequestFullScreen ||
         el.mozRequestFullScreen ||
         el.msFullscreenEnabled
-    return !!isFull;
+    if (isFull == undefined) {
+        isFull = false;
+    }
+    return true;
 }
 
 onMounted(() => {
@@ -173,13 +164,25 @@ onMounted(() => {
         isCollapse.value = true
         eventBus.$emit('changeCollapse', isCollapse.value)
     }
-    window.onresize = () => (() => {
+    window.onresize = () => {
         screenWidth.value = document.body.clientWidth;
-        if(checkFull()){
+        if (!checkFull()) {
             console.log('退出全屏')
         }
-    })()
+    }
     window.addEventListener('keydown', keyDown)
+    document.addEventListener("fullscreenchange", () => {
+        isFull.value = !isFull.value
+    })
+    document.addEventListener("mozfullscreenchange", () => {
+        isFull.value = !isFull.value
+    })
+    document.addEventListener("webkitfullscreenchange", () => {
+        isFull.value = !isFull.value
+    })
+    document.addEventListener("msfullscreenchange", () => {
+        isFull.value = !isFull.value
+    })
 })
 
 onUnmounted(() => {

@@ -13,13 +13,13 @@
         </div>
         <div class="navbar-info">
             <div class="navbar-info-right" @click="isFullScreen">
-                <img class="navbar-info-right-img" :src="isFull?`/src/assets/exit-fullscreen.svg`:`/src/assets/screen-full.svg`" />
+                <svgIcon class="navbar-info-right-img" :src="isFull?'exit-fullscreen.svg':'screen-full.svg'" />
             </div>
             <el-dropdown class="navbar-info-right">
                 <el-avatar :src="squareUrl" />
                 <template #dropdown>
                     <el-dropdown-menu>
-                        <el-dropdown-item><a :href="gitUrl" target="_blank">Gitee</a></el-dropdown-item>
+                        <el-dropdown-item><a :href="gitUrl" target="_blank">GitHub</a></el-dropdown-item>
                         <el-dropdown-item @click="logout()">Log out</el-dropdown-item>
                     </el-dropdown-menu>
                 </template>
@@ -45,6 +45,7 @@
 <script setup lang="ts">
 import { onMounted, onUnmounted, reactive, ref, toRefs, watch } from "vue";
 import Breadcrumb from "./Breadcrumb/index.vue";
+import svgIcon from "@/components/svg-icon.vue";
 import eventBus from "@/utils/event-bus";
 import router from "@/router";
 
@@ -57,7 +58,7 @@ const state = reactive({
     squareUrl:
         'https://cube.elemecdn.com/9/c2/f0ee8a3c7c9638a54940382568c9dpng.png',
 })
-const gitUrl = ref("https://gitee.com/saylife_admin/vue3_admin.git")
+const gitUrl = ref("https://github.com/code-lucky")
 
 const routes = ref([{
     name: '首页',

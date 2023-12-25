@@ -6,16 +6,13 @@ import { IResponse } from './type'
 
 export const request = (options: any) => {
   return new Promise((resolve, reject) => {
-
+    const baseURL = import.meta.env.VITE_BASE_URL
+    const evn = import.meta.env.VITE_NODE_ENV
     // create an axios instance
     const service = axios.create({
-      // baseURL: process.env.BASE_API, // api 的 base_url
-      // baseURL:'https://api.server-api.cn',
-      // baseURL:'http://124.222.178.74:3000',
-      baseURL: '/api',
+      baseURL: evn === 'development' ? '/api' : baseURL,
       timeout: 80000 // request timeout
     })
-
 
     // request interceptor
     service.interceptors.request.use(

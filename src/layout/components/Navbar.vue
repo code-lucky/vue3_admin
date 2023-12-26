@@ -141,35 +141,11 @@ const keyDown = (e: any) => {
     }
 }
 
-const checkFull = () => {
-    //判断浏览器是否处于全屏状态 （需要考虑兼容问题）
-    //火狐浏览器
-    let el: any;
-    el = document.documentElement;
-    var isFull = el.mozFullScreen ||
-        el.fullScreen ||
-        //谷歌浏览器及Webkit内核浏览器
-        el.webkitIsFullScreen ||
-        el.webkitRequestFullScreen ||
-        el.mozRequestFullScreen ||
-        el.msFullscreenEnabled
-    if (isFull == undefined) {
-        isFull = false;
-    }
-    return true;
-}
-
 onMounted(() => {
     addRouteList()
     if (document.body.clientWidth < 500) {
         isCollapse.value = true
         eventBus.$emit('changeCollapse', isCollapse.value)
-    }
-    window.onresize = () => {
-        screenWidth.value = document.body.clientWidth;
-        if (!checkFull()) {
-            console.log('退出全屏')
-        }
     }
     window.addEventListener('keydown', keyDown)
     document.addEventListener("fullscreenchange", () => {

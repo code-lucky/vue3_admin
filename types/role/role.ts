@@ -3,3 +3,9 @@ export interface Tree {
     label: string
     children?: []
 }
+
+export interface RoleDto{
+    roleName: string,
+    isShow?: boolean,
+    rules: number[]
+}

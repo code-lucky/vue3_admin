@@ -38,12 +38,12 @@
 
 <script lang="ts" setup>
 import { RefreshRight } from '@element-plus/icons-vue'
-import { getRoleUserList } from '@/api/role';
+import { addRoleUser, getRoleUserList } from '@/api/role';
 import { onMounted, reactive, ref } from 'vue';
 import AddRole from './components/add-role.vue'
 import { formatDate } from '@/filters/index'
 import { getMenuTree } from '@/api/menu';
-import { Tree } from '#/role/role'
+import { RoleDto, Tree } from '#/role/role'
 
 const statusArr = reactive(['显示', '不显示'])
 const roleUserList = ref([])
@@ -54,6 +54,7 @@ const threeList = ref<Tree>({
   label: '',
   children: []
 })
+
 /**
  * 根据角色名称查询角色列表
  */
@@ -75,8 +76,15 @@ const findRoleUserList = () => {
 const resetRoleName = () => {
   roleName.value = ''
 }
-const addRole = (data: Object) => {
-  console.log('进行了addRole操作', data)
+const addRole = (data: RoleDto) => {
+  const subParams:RoleDto = {
+    roleName: data.roleName,
+    isShow: data.isShow,
+    rules: [1,2,3]
+  }
+  addRoleUser(subParams).then((res: any) => {
+
+  })
 }
 const cancel = () => {
   isDialog.value = false
@@ -88,7 +96,6 @@ const getMenuTreeList = () => {
   })
 }
 onMounted(() => {
-  console.log('.....')
   findRoleUserList()
   getMenuTreeList()
 })

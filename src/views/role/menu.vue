@@ -51,7 +51,7 @@
 </template>
 
 <script lang="ts" setup>
-import { inject, onMounted, reactive, ref } from 'vue';
+import { onMounted, reactive, ref } from 'vue';
 import MenuModel from './components/menu-model.vue'
 import { formatDate } from '@/filters/index'
 import { AddMenuParams } from '#/role/menu'

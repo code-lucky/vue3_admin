@@ -31,7 +31,7 @@
       </el-table-column>
     </el-table>
     <el-dialog v-model="isDialog" title="添加角色" width="30%" center>
-      <AddRole @addRole="addRole" @cancel="cancel"></AddRole>
+      <AddRole @addRole="addRole" @cancel="cancel" :treeList="threeList"></AddRole>
     </el-dialog>
   </div>
 </template>
@@ -42,11 +42,18 @@ import { getRoleUserList } from '@/api/role';
 import { onMounted, reactive, ref } from 'vue';
 import AddRole from './components/add-role.vue'
 import { formatDate } from '@/filters/index'
+import { getMenuTree } from '@/api/menu';
+import { Tree } from '#/role/role'
 
 const statusArr = reactive(['显示', '不显示'])
 const roleUserList = ref([])
 const roleName = ref('')
 const isDialog = ref(false)
+const threeList = ref<Tree>({
+  id: 0,
+  label: '',
+  children: []
+})
 /**
  * 根据角色名称查询角色列表
  */
@@ -75,8 +82,15 @@ const cancel = () => {
   isDialog.value = false
 }
 
+const getMenuTreeList = () => {
+  getMenuTree().then((res: any) => {
+    threeList.value = res.data
+  })
+}
 onMounted(() => {
+  console.log('.....')
   findRoleUserList()
+  getMenuTreeList()
 })
 
 </script>

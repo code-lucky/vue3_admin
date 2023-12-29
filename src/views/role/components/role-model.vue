@@ -5,13 +5,14 @@
                 <el-input v-model="submitData.roleName" placeholder="请输入角色名称" />
             </el-form-item>
             <el-form-item label="显示" prop="status">
-                <el-switch v-model="submitData.isShow" class="ml-2" />
+                <el-switch v-model="submitData.isShow" class="ml-2" :active-value="0" :inactive-value="1"/>
             </el-form-item>
             <el-form-item>
                 <el-tree :data="treeList" ref="treeRef" :props="defaultProps" node-key="id" show-checkbox />
             </el-form-item>
             <el-form-item>
-                <el-button type="primary" @click="onSubmit">确定</el-button>
+                <el-button type="primary" @click="onSubmit" v-if="status === 'add'">新增</el-button>
+                <el-button type="primary" @click="updateRole" v-if="status === 'edit'">更新</el-button>
                 <el-button @click="cancel">取消</el-button>
             </el-form-item>
         </el-form>
@@ -20,7 +21,7 @@
 <script lang="ts" setup>
 import { ElTree } from 'element-plus';
 import { Tree } from 'element-plus/es/components/tree-v2/src/types';
-import { ref } from 'vue';
+import { onMounted, ref } from 'vue';
 
 interface props {
     treeList: {
@@ -28,23 +29,31 @@ interface props {
         label: string,
         children?: Tree[]
     },
+    status: string,
+    showRole?: {
+        roleName: string,
+        isShow: number,
+        rules: number[]
+    }
 }
 
-defineProps<props>()
+const props = defineProps<props>()
 
 const treeRef = ref<InstanceType<typeof ElTree>>()
 
 const defaultProps = {
     children: 'children',
-    label: 'label',
+    label: 'label'
 }
 
 const submitData = ref({
     roleName: '',
-    isShow: true
-});
+    isShow: 0
+})
 
-const emit = defineEmits(['addRole', 'cancel'])
+const rules = ref<number[]>([])
+
+const emit = defineEmits(['addRole', 'cancel', 'updateRole'])
 
 const onSubmit = () => {
     let rules: any[] = []
@@ -53,13 +62,43 @@ const onSubmit = () => {
     const data = {
         roleName: submitData.value.roleName,
         isShow: submitData.value.isShow,
-        rules:rules
+        rules: rules
     }
     emit('addRole', data)
 }
+
+const updateRole = () => {
+    let rules: any[] = []
+    rules = rules.concat(treeRef.value!.getHalfCheckedKeys())
+    rules = rules.concat(treeRef.value!.getCheckedKeys(false))
+    const data = {
+        roleName: submitData.value.roleName,
+        isShow: submitData.value.isShow,
+        rules: rules
+    }
+    emit('updateRole', data)
+}
+
 const cancel = () => {
     emit('cancel')
 }
+
+const init = () =>{
+    if(props.status === 'edit'){
+        submitData.value.roleName =  props.showRole?.roleName || ''
+        submitData.value.isShow = props.showRole?.isShow || 0
+        rules.value = props.showRole?.rules || []
+        rules.value.forEach(item => {
+            const node = treeRef.value!.getNode(item)
+            if(node.isLeaf){
+                treeRef.value!.setChecked(node, true, false)
+            }
+        })
+    }
+}
+onMounted(()=>{
+    init()
+})
 
 </script>
 <style scoped lang="scss"></style>

@@ -5,6 +5,7 @@ export interface Tree {
 }
 
 export interface RoleDto{
+    id?: number,
     roleName: string,
     isShow?: boolean,
     rules: number[]

@@ -8,3 +8,7 @@ export function getRoleUserList(roleName: any) {
 export function addRoleUser(roleDto: RoleDto) {
     return request({ url: `/role/addRoleUser`, method: 'post', data: roleDto })
 }
+
+export function updateRoleUser(roleDto: RoleDto) {
+    return request({ url: `/role/updateRoleUser`, method: 'post', data: roleDto })
+}

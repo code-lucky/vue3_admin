@@ -5,7 +5,7 @@
       <el-button class="ml-10" type="primary" plain @click="getRoleUserListByName">查询</el-button>
       <el-button class="ml-10" :icon="RefreshRight" @click="resetRoleName">重置</el-button>
     </div>
-    <el-button type="primary" class="mb-20" @click="isDialog = true">添加角色</el-button>
+    <el-button type="primary" class="mb-20" @click="add">添加角色</el-button>
     <el-table :data="roleUserList" border style="width: 100%">
       <el-table-column prop="id" label="用户编号" />
       <el-table-column prop="roleName" label="角色昵称" />
@@ -25,13 +25,14 @@
         </template>
       </el-table-column>
       <el-table-column prop="edit" label="编辑">
-        <template #default>
-          <el-button link type="primary" size="small">编辑</el-button>
+        <template #default="scope">
+          <el-button link type="primary" size="small" @click="edit(scope.row)">编辑</el-button>
         </template>
       </el-table-column>
     </el-table>
-    <el-dialog v-model="isDialog" title="添加角色" width="30%" center>
-      <AddRole @addRole="addRole" @cancel="cancel" :treeList="threeList"></AddRole>
+    <el-dialog v-model="isDialog" :title="addOrEdit === 'add' ? '添加角色' : '修改角色'" width="30%" center>
+      <RoleModel v-if="isDialog && addOrEdit === 'add'" @addRole="addRole" @cancel="cancel" :treeList="threeList" :status="addOrEdit"/>
+      <RoleModel v-if="isDialog && addOrEdit === 'edit'" :showRole="showRole" @updateRole="updateMenu" @cancel="cancel" :treeList="threeList" :status="addOrEdit"/>
     </el-dialog>
   </div>
 </template>
@@ -40,9 +41,9 @@
 import { RefreshRight } from '@element-plus/icons-vue'
 import { addRoleUser, getRoleUserList } from '@/api/role';
 import { onMounted, reactive, ref } from 'vue';
-import AddRole from './components/add-role.vue'
+import RoleModel from './components/role-model.vue'
 import { formatDate } from '@/filters/index'
-import { getMenuTree } from '@/api/menu';
+import { getMenuTree, updateMenu } from '@/api/menu';
 import { RoleDto, Tree } from '#/role/role'
 
 const statusArr = reactive(['显示', '不显示'])
@@ -53,6 +54,11 @@ const threeList = ref<Tree>({
   id: 0,
   label: '',
   children: []
+})
+const addOrEdit = ref('add')
+const showRole = ref({
+  roleName: '',
+  isShow: 0
 })
 
 /**
@@ -76,16 +82,20 @@ const findRoleUserList = () => {
 const resetRoleName = () => {
   roleName.value = ''
 }
+
+// 添加角色
 const addRole = (data: RoleDto) => {
   const subParams:RoleDto = {
     roleName: data.roleName,
     isShow: data.isShow,
-    rules: [1,2,3]
+    rules: data.rules
   }
   addRoleUser(subParams).then((res: any) => {
 
   })
 }
+
+// 取消按钮
 const cancel = () => {
   isDialog.value = false
 }
@@ -94,6 +104,23 @@ const getMenuTreeList = () => {
   getMenuTree().then((res: any) => {
     threeList.value = res.data
   })
+}
+
+// 需要修改的数据回显
+const edit = (data:any) =>{
+  addOrEdit.value = 'edit'
+  isDialog.value = true
+  const result = {
+    roleName: data.roleName,
+    isShow: data.status,
+    rules: data.rules
+  }
+  showRole.value = result
+}
+
+const add = () =>{
+  addOrEdit.value = 'add'
+  isDialog.value = true
 }
 onMounted(() => {
   findRoleUserList()

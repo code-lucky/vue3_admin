@@ -1,1 +1,0 @@
-import{l as e}from"./index-809772d8.js";function r(r){return e({url:`/role/getRoleUserList?${r?"roleName=":""}${r||""}`,method:"get"})}function o(r){return e({url:"/role/addRoleUser",method:"post",data:r})}export{o as a,r as g};

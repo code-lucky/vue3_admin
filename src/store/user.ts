@@ -1,6 +1,6 @@
 import { defineStore } from "pinia"
-import catchs, { state } from "@/utils/cache"
-import { getMenuList } from '@/api/menu'
+import catchs from "@/utils/cache"
+import { getMenuByUserId } from '@/api/menu'
 import Layout from '@/layout/index.vue'
 import { RouteRecordRaw } from "vue-router"
 import router from "@/router"
@@ -9,7 +9,13 @@ const modules = import.meta.glob('@/views/*/*.vue')
 export const userStore = defineStore('userInfo', {
 	state: () => {
 		return {
-			userInfo: {},
+			userInfo: {
+				accessToken: '',
+				refreshToken: '',
+				userInfo: {
+					id: 0
+				}
+			},
 			menuList: [] as Array<RouteRecordRaw>,
 			hasRoutes: false as Boolean
 		}
@@ -32,6 +38,7 @@ export const userStore = defineStore('userInfo', {
 		async setUserInfo(userInfo: any) {
 			this.userInfo = userInfo
 			this.setToken(userInfo.accessToken)
+			localStorage.setItem('userId', userInfo.userInfo.id)
 		},
 		setToken(token: any) {
 			catchs.setStorage('TOKEN', token)
@@ -40,7 +47,9 @@ export const userStore = defineStore('userInfo', {
 			this.hasRoutes = val
 		},
 		async setRoutes() {
-			const data: any = await getMenuList()
+			const user = this.userInfo.userInfo;
+			const userId = localStorage.getItem('userId') || 0
+			const data: any = await getMenuByUserId(user.id === 0 || '' ? Number(userId) : user.id)
 			const routes = await this.toTree(data.data, 0)
 			this.menuList = routes
 			routes.forEach((item: any) => {
@@ -50,7 +59,7 @@ export const userStore = defineStore('userInfo', {
 		},
 		async toTree(treeList: any, pid: number) {
 			const arr: any = []
-			treeList.forEach(async (item: any) => {
+			treeList.forEach(async (item: any, idx: number) => {
 				if (item.pid === pid) {
 					const result = {
 						path: item.component,
@@ -61,11 +70,19 @@ export const userStore = defineStore('userInfo', {
 						icon: item.icon ? item.icon : '',
 						children: []
 					}
+
 					const children = await this.toTree(treeList, item.id)
+
 					if (children.length > 0) {
 						result.children = children
 						result.component = item.pid === 0 ? Layout : subView
+
+						if(idx === 0) {
+							result.path = children[0].path
+							result.redirect = '/'
+						}
 					}
+					
 					arr.push(result)
 				}
 			})

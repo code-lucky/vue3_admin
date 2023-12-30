@@ -72,10 +72,10 @@ const submitForm = (formEl: FormInstance | undefined) => {
     formEl.validate((valid) => {
         if (valid) {
             //开始执行登陆
-            login(ruleForm).then((res: any) => {
+            login(ruleForm).then(async(res: any) => {
                 const data = res
                 if (data.code == 200) {
-                    store.setUserInfo(data.data)
+                    await store.setUserInfo(data.data)
                     ElMessage.success(data.message)
                     router.push({ path: '/' })
                 } else {

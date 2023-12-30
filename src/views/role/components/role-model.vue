@@ -31,6 +31,7 @@ interface props {
     },
     status: string,
     showRole?: {
+        id: number,
         roleName: string,
         isShow: number,
         rules: number[]
@@ -72,6 +73,7 @@ const updateRole = () => {
     rules = rules.concat(treeRef.value!.getHalfCheckedKeys())
     rules = rules.concat(treeRef.value!.getCheckedKeys(false))
     const data = {
+        id: props.showRole?.id,
         roleName: submitData.value.roleName,
         isShow: submitData.value.isShow,
         rules: rules

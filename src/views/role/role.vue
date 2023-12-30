@@ -31,20 +31,23 @@
       </el-table-column>
     </el-table>
     <el-dialog v-model="isDialog" :title="addOrEdit === 'add' ? '添加角色' : '修改角色'" width="30%" center>
-      <RoleModel v-if="isDialog && addOrEdit === 'add'" @addRole="addRole" @cancel="cancel" :treeList="threeList" :status="addOrEdit"/>
-      <RoleModel v-if="isDialog && addOrEdit === 'edit'" :showRole="showRole" @updateRole="updateMenu" @cancel="cancel" :treeList="threeList" :status="addOrEdit"/>
+      <RoleModel v-if="isDialog && addOrEdit === 'add'" @addRole="addRole" @cancel="cancel" :treeList="threeList"
+        :status="addOrEdit" />
+      <RoleModel v-if="isDialog && addOrEdit === 'edit'" :showRole="showRole" @updateRole="updateRole" @cancel="cancel"
+        :treeList="threeList" :status="addOrEdit" />
     </el-dialog>
   </div>
 </template>
 
 <script lang="ts" setup>
 import { RefreshRight } from '@element-plus/icons-vue'
-import { addRoleUser, getRoleUserList } from '@/api/role';
+import { addRoleUser, getRoleUserList, updateRoleUser } from '@/api/role';
 import { onMounted, reactive, ref } from 'vue';
 import RoleModel from './components/role-model.vue'
 import { formatDate } from '@/filters/index'
-import { getMenuTree, updateMenu } from '@/api/menu';
+import { getMenuTree } from '@/api/menu';
 import { RoleDto, Tree } from '#/role/role'
+import { ElMessage } from 'element-plus';
 
 const statusArr = reactive(['显示', '不显示'])
 const roleUserList = ref([])
@@ -57,8 +60,10 @@ const threeList = ref<Tree>({
 })
 const addOrEdit = ref('add')
 const showRole = ref({
+  id: 0,
   roleName: '',
-  isShow: 0
+  isShow: 0,
+  rules: []
 })
 
 /**
@@ -85,13 +90,29 @@ const resetRoleName = () => {
 
 // 添加角色
 const addRole = (data: RoleDto) => {
-  const subParams:RoleDto = {
+  const subParams: RoleDto = {
     roleName: data.roleName,
     isShow: data.isShow,
     rules: data.rules
   }
   addRoleUser(subParams).then((res: any) => {
+    if (res.data === '添加成功') {
+      ElMessage.success(res.data)
+      isDialog.value = false
+      window.location.reload()
+    }
+  })
+}
 
+// 更新角色信息
+const updateRole = (data: RoleDto) => {
+  console.log('data========>', data)
+  updateRoleUser(data).then((res: any) => {
+    if (res.data === '修改成功') {
+      ElMessage.success(res.data)
+      isDialog.value = false
+      window.location.reload()
+    }
   })
 }
 
@@ -107,10 +128,11 @@ const getMenuTreeList = () => {
 }
 
 // 需要修改的数据回显
-const edit = (data:any) =>{
+const edit = (data: any) => {
   addOrEdit.value = 'edit'
   isDialog.value = true
   const result = {
+    id: data.id,
     roleName: data.roleName,
     isShow: data.status,
     rules: data.rules
@@ -118,7 +140,7 @@ const edit = (data:any) =>{
   showRole.value = result
 }
 
-const add = () =>{
+const add = () => {
   addOrEdit.value = 'add'
   isDialog.value = true
 }

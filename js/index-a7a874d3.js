@@ -1,1 +1,0 @@
-import{d as t,k as a,t as e}from"./index-aaaebed5.js";const n=t({__name:"index",setup(t){const n=a();return onMounted((()=>{e(localStorage.getItem("userId")||0).then((t=>{n.push({path:t.data[1].path})}))})),(t,a)=>null}});export{n as default};

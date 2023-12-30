@@ -1,0 +1,1 @@
+import{d as a,o as e,c as t,m as s,h as o,k as n}from"./index-9d9c798a.js";const d=a({__name:"index",setup(a){const d=n();return e((()=>{s(Number(localStorage.getItem("userId"))||0).then((a=>{d.push({path:a.data[0].component})}))})),(a,e)=>(o(),t("div"))}});export{d as default};

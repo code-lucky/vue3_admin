@@ -9,7 +9,7 @@ import { reactive, watch } from 'vue';
 import { useRoute } from 'vue-router';
 const $route = useRoute()
 const arr = reactive({ values: [] as any })
-const list = reactive({ values: [{ path: '/dashboard', name: '/dashboard' }] as any })
+const list = reactive({ values: [{ path: '/', name: '首页' }] as any })
 
 const isIndexRoute = () => {
     arr.values = $route.matched.filter((item: any) => !item.hidden && item.name)
@@ -20,7 +20,7 @@ const isIndexRoute = () => {
 }
 isIndexRoute()
 watch(() => $route.matched, (newRoute: any, oldRoute: any) => {
-    list.values = [{ path: '/dashboard', name: '首页' }]
+    list.values = [{ path: '/', name: '首页' }]
     arr.values = newRoute
     if (arr.values.filter((res: any) => res.path == list.values[0].path).length > 0) {
     } else {

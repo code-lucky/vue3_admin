@@ -1,5 +1,4 @@
 import { createRouter, createWebHashHistory, RouteRecordRaw } from "vue-router";
-import Layout from '@/layout/index.vue'
 const routes: Array<RouteRecordRaw> = [
   {
     path: "/login",
@@ -9,28 +8,10 @@ const routes: Array<RouteRecordRaw> = [
   },
   {
     path: "/",
-    redirect: '/dashboard',
-    name: '首页',
-    component: Layout,
-    icon: 'House',
-    children: [{
-      path: 'dashboard',
-      name: '首页',
-      component: () => import('@/views/dashboard/index.vue'),
-    }]
-  },
-  // {
-  //   path: "/",
-  //   redirect: '/',
-  //   name: 'middle',
-  //   component: Layout,
-  //   icon: 'House',
-  //   children: [{
-  //     path: 'dashboard',
-  //     name: 'middle',
-  //     component: () => import('@/views/middle/index.vue'),
-  //   }]
-  // },
+    name: "middle",
+    component: () => import('@/views/middle/index.vue'),
+    hidden: true
+  }
 ];
 
 const router = createRouter({

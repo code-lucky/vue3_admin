@@ -51,6 +51,7 @@ export const userStore = defineStore('userInfo', {
 			const userId = localStorage.getItem('userId') || 0
 			const data: any = await getMenuByUserId(user.id === 0 || '' ? Number(userId) : user.id)
 			const routes = await this.toTree(data.data, 0)
+			console.log(routes)
 			this.menuList = routes
 			routes.forEach((item: any) => {
 				router.addRoute(item)
@@ -68,21 +69,32 @@ export const userStore = defineStore('userInfo', {
 						component: item.pid === 0 ? Layout : modules[`../views${item.component}.vue`],
 						hidden: item.isShow !== 0 ? true : false,
 						icon: item.icon ? item.icon : '',
-						children: []
+						children: [] as any
 					}
 
 					const children = await this.toTree(treeList, item.id)
 
+					// 用于多级菜单赋值给children值
 					if (children.length > 0) {
 						result.children = children
 						result.component = item.pid === 0 ? Layout : subView
-
-						if(idx === 0) {
-							result.path = children[0].path
-							result.redirect = '/'
-						}
+						result.path = children[0].path
+						result.redirect = children[0].path
 					}
-					
+
+					// 如果只有一层菜单，则再增加一级用于跳转
+					if (result.children.length === 0 && item.pid === 0) {
+						result.children = [{
+							path: result.path,
+							redirect: undefined,
+							name: result.name,
+							component: modules[`../views${result.path}.vue`],
+							hidden: false,
+							icon: result.icon ? result.icon : '',
+							children: [] as any
+						}]
+					}
+
 					arr.push(result)
 				}
 			})

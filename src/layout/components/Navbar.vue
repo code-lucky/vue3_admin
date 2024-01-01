@@ -48,7 +48,6 @@ import Breadcrumb from "./Breadcrumb/index.vue";
 import svgIcon from "@/components/svg-icon.vue";
 import eventBus from "@/utils/event-bus";
 import router from "@/router";
-import { getMenuByUserId } from "@/api/menu";
 
 interface routeType {
     name: string,
@@ -98,7 +97,6 @@ const isFullScreen = () => {
 const addRouteList = () => {
     // 初始化时，获取menu中第一个路由
     const menuList = JSON.parse(localStorage.getItem('menu-list') || '')
-    console.log(menuList)
     routes.value = [{
         name: menuList[0].children[0].name,
         path: menuList[0].children[0].path
@@ -108,7 +106,6 @@ const addRouteList = () => {
             name: data.name,
             path: data.path
         }
-        console.log(routes.value, route)
         if (!JSON.stringify(routes.value).includes(JSON.stringify(route))) {
             routes.value.push(route)
         }

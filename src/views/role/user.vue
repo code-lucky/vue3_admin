@@ -45,10 +45,10 @@ import { onMounted, reactive, ref } from 'vue';
 import { formatDate } from '@/filters/index'
 import { createUser, getUserList } from '@/api/user';
 import { getRoleUserList } from '@/api/role'
-import { CreateUserDto } from '#/role/user';
+import { UserFormDto } from '#/role/user';
 import { ElMessage } from 'element-plus';
+
 const statusArr = reactive(['开启', '关闭'])
-const isDelete = reactive(['是', '否'])
 const userName = ref('')
 const userList = ref([])
 const isDialog = ref(false)
@@ -89,7 +89,7 @@ const add = () => {
   isAddOrEdit.value = 'add'
 }
 
-const addUser = (data: CreateUserDto) => {
+const addUser = (data: UserFormDto) => {
   createUser(data).then((res:any)=>{
     if (res.data === '添加成功') {
       ElMessage.success(res.data)
@@ -99,7 +99,7 @@ const addUser = (data: CreateUserDto) => {
   })
 }
 
-const editUser = (data: CreateUserDto) => {
+const editUser = (data: UserFormDto) => {
   console.log(data)
 }
 

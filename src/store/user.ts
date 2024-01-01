@@ -51,7 +51,6 @@ export const userStore = defineStore('userInfo', {
 			const userId = localStorage.getItem('userId') || 0
 			const data: any = await getMenuByUserId(user.id === 0 || '' ? Number(userId) : user.id)
 			const routes = await this.toTree(data.data, 0)
-			console.log(routes)
 			this.menuList = routes
 			routes.forEach((item: any) => {
 				router.addRoute(item)

@@ -1,6 +1,6 @@
 <template>
     <div class="continer">
-        <el-form :model="submitData" label-width="120px">
+        <el-form ref="ruleFormRef" status-icon :model="submitData" :rules="rules" label-width="120px">
             <el-form-item label="用户账号" prop="userName">
                 <el-input v-model="submitData.userName" placeholder="请输入用户账号" />
             </el-form-item>
@@ -32,8 +32,9 @@
     </div>
 </template>
 <script lang="ts" setup>
-import { CreateUserDto } from '#/role/user';
-import { onMounted, ref } from 'vue';
+import { UserFormDto } from '#/role/user';
+import type { FormInstance, FormRules } from 'element-plus';
+import { onMounted, reactive, ref } from 'vue';
 const props = defineProps({
     status: {
         type: String,
@@ -48,24 +49,58 @@ const props = defineProps({
         default: {}
     }
 })
+
 const emit = defineEmits(['addUser', 'cancel', 'editUser'])
-const submitData = ref<CreateUserDto>({
+
+const ruleFormRef = ref<FormInstance>()
+
+const submitData = ref<UserFormDto>({
     userName: '',
     password: '',
     roleId: '',
     email: '',
     status: 0
 })
+
+const rules = reactive<FormRules<UserFormDto>>({
+    userName: [
+        { required: true, message: '用户账号不能为空', trigger: 'blur' },
+        { min: 3, message: '用户账户不能小于3位数', trigger: 'blur' }
+    ],
+    password: [
+        { required: true, message: '用户密码不能为空', trigger: 'blur' },
+        { min: 6, message: '用户密码不能小于6位数', trigger: 'blur' }
+    ],
+    roleId: [
+        { required: true, message: '请选择用户权限', trigger: 'blur' },
+    ],
+    email: [
+        { required: true, message: '用户邮箱不能为空', trigger: 'blur' },
+        { type: 'email', message: '请输入正确的用户邮箱', trigger: 'blur' }
+    ],
+    status: [
+        { required: true, message: '请选择用户状态', trigger: 'blur' }
+    ]
+})
+
 const roleList = props.roleList
 
 const cancel = () => {
     emit('cancel')
 }
 const addUser = () => {
-    emit('addUser', submitData.value)
+    ruleFormRef.value?.validate((valid) => {
+        if (valid) {
+            emit('addUser', submitData.value)
+        }
+    })
 }
 const editUser = () => {
-    emit('editUser', submitData.value)
+    ruleFormRef.value?.validate((valid) => {
+        if (valid) {
+            emit('editUser', submitData.value)
+        }
+    })
 }
 
 const init = () => {

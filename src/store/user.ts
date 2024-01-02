@@ -52,6 +52,7 @@ export const userStore = defineStore('userInfo', {
 			const data: any = await getMenuByUserId(user.id === 0 || '' ? Number(userId) : user.id)
 			const routes = await this.toTree(data.data, 0)
 			this.menuList = routes
+			console.log('rputes', routes)
 			routes.forEach((item: any) => {
 				router.addRoute(item)
 			})
@@ -62,8 +63,8 @@ export const userStore = defineStore('userInfo', {
 			treeList.forEach(async (item: any, idx: number) => {
 				if (item.pid === pid) {
 					const result = {
-						path: item.component,
-						redirect: pid === 0 ? item.component : undefined,
+						path: item.path ? item.path : item.component,
+						redirect: pid === 0 ? item.path ? item.path : item.component : '',
 						name: item.name,
 						component: item.pid === 0 ? Layout : modules[`../views${item.component}.vue`],
 						hidden: item.isShow !== 0 ? true : false,
@@ -87,7 +88,7 @@ export const userStore = defineStore('userInfo', {
 							path: result.path,
 							redirect: undefined,
 							name: result.name,
-							component: modules[`../views${result.path}.vue`],
+							component: modules[`../views${item.component}.vue`],
 							hidden: false,
 							icon: result.icon ? result.icon : '',
 							children: [] as any

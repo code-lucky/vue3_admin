@@ -32,9 +32,11 @@
       </el-table-column>
     </el-table>
 
-    <el-dialog v-model="isDialog" :title="isAddOrEdit === 'add'?'新增管理员':'修改管理员'" width="40%">
-      <UserModule v-if="isAddOrEdit === 'add' && isDialog" :status="isAddOrEdit" :roleList="roleList" @addUser="addUser" @cancel="cancel"></UserModule>
-      <UserModule v-if="isAddOrEdit === 'edit' && isDialog" :status="isAddOrEdit" :roleList="roleList" @editUser="editUser" @cancel="cancel" :userInfo="currentUser"></UserModule>
+    <el-dialog v-model="isDialog" :title="isAddOrEdit === 'add' ? '新增管理员' : '修改管理员'" width="40%">
+      <UserModule v-if="isAddOrEdit === 'add' && isDialog" :status="isAddOrEdit" :roleList="roleList" @addUser="addUser"
+        @cancel="cancel"></UserModule>
+      <UserModule v-if="isAddOrEdit === 'edit' && isDialog" :status="isAddOrEdit" :roleList="roleList"
+        @editUser="editUser" @cancel="cancel" :userInfo="currentUser"></UserModule>
     </el-dialog>
   </div>
 </template>
@@ -43,7 +45,7 @@
 import UserModule from './components/user-module.vue'
 import { onMounted, reactive, ref } from 'vue';
 import { formatDate } from '@/filters/index'
-import { createUser, getUserList } from '@/api/user';
+import { createUser, getUserList, updateUser } from '@/api/user';
 import { getRoleUserList } from '@/api/role'
 import { UserFormDto } from '#/role/user';
 import { ElMessage } from 'element-plus';
@@ -78,7 +80,7 @@ const cancel = () => {
   isDialog.value = false
 }
 
-const edit = (data:any) =>{
+const edit = (data: any) => {
   currentUser.value = data
   isDialog.value = true
   isAddOrEdit.value = 'edit'
@@ -90,17 +92,23 @@ const add = () => {
 }
 
 const addUser = (data: UserFormDto) => {
-  createUser(data).then((res:any)=>{
+  createUser(data).then((res: any) => {
     if (res.data === '添加成功') {
       ElMessage.success(res.data)
       isDialog.value = false
-      window.location.reload()
+      findUserList()
     }
   })
 }
 
 const editUser = (data: UserFormDto) => {
-  console.log(data)
+  updateUser(data).then((res: any) => {
+    if (res.data === '更新成功') {
+      ElMessage.success(res.data)
+      isDialog.value = false
+      findUserList();
+    }
+  })
 }
 
 onMounted(() => {

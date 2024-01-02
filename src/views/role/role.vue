@@ -7,7 +7,6 @@
     </div>
     <el-button type="primary" class="mb-20" @click="add">添加角色</el-button>
     <el-table :data="roleUserList" border style="width: 100%">
-      <el-table-column prop="id" label="用户编号" />
       <el-table-column prop="roleName" label="角色昵称" />
       <el-table-column prop="status" label="状态">
         <template #default="scope">
@@ -99,7 +98,7 @@ const addRole = (data: RoleDto) => {
     if (res.data === '添加成功') {
       ElMessage.success(res.data)
       isDialog.value = false
-      window.location.reload()
+      findRoleUserList()
     }
   })
 }
@@ -111,7 +110,7 @@ const updateRole = (data: RoleDto) => {
     if (res.data === '修改成功') {
       ElMessage.success(res.data)
       isDialog.value = false
-      window.location.reload()
+      findRoleUserList()
     }
   })
 }

@@ -98,6 +98,7 @@ const addUser = () => {
 const editUser = () => {
     ruleFormRef.value?.validate((valid) => {
         if (valid) {
+            submitData.value.id = props.userInfo.id
             emit('editUser', submitData.value)
         }
     })

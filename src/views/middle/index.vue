@@ -9,7 +9,7 @@ import { onMounted} from 'vue'
 const router = useRouter()
 const init = () => {
     getMenuByUserId(Number(localStorage.getItem('userId')) || 0).then((res: any) => {
-        router.push({ path: res.data[0].component })
+        router.push({ path: res.data[0].path ? res.data[0].path : res.data[0].component })
     })
 }
 onMounted(() => {

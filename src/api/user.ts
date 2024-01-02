@@ -16,3 +16,7 @@ export function getUserList(userName:string | undefined | null){
 export function createUser(createUser: UserFormDto) {
     return request({url: '/user/createUser',method: 'post', data: createUser})
 }
+
+export function updateUser(user: UserFormDto){
+    return request({url: '/user/updateUser',method: 'post', data: user})
+}

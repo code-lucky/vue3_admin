@@ -1,38 +1,100 @@
 <template>
-    <el-form :inline="true">
-        <el-form-item label="上级菜单" class="w-hundred">
-            <el-tree-select v-model="submitParam.pid" :data="treeList" check-strictly :render-after-expand="false"
-                class="w-hundred" />
-        </el-form-item>
-        <el-form-item label="菜单类型" class="w-hundred">
-            <el-radio-group v-model="submitParam.menuType" class="w-hundred">
-                <el-radio :label="idx" v-for="(item, idx) in menuOptions" :key="idx">{{ item }}</el-radio>
-            </el-radio-group>
-        </el-form-item>
-        <el-form-item label="菜单图标" class="w-hundred">
-            <el-input placeholder="请选择菜单图标" v-model="submitParam.icon" class="w-hundred">
-                <template #append>
-                    <el-icon @click="isShowIcon = true">
-                        <CirclePlus />
-                    </el-icon>
-                </template>
-            </el-input>
-        </el-form-item>
-        <el-form-item label="菜单名称">
-            <el-input placeholder="请输入菜单名称" v-model="submitParam.name" />
-        </el-form-item>
-        <el-form-item label="显示排序">
-            <el-input-number v-model="submitParam.sort" :min="0" :max="1000" controls-position="right"
-                @change="handleChange" />
-        </el-form-item>
-        <el-form-item label="路径组件">
-            <el-input placeholder="请输入组件路径" v-model="submitParam.component" />
-        </el-form-item>
-        <el-form-item label="显示状态">
-            <el-radio-group v-model="submitParam.isShow">
-                <el-radio :label="idx" v-for="(item, idx) in showStatus" :key="idx">{{ item }}</el-radio>
-            </el-radio-group>
-        </el-form-item>
+    <el-form ref="ruleFormRef" :model="submitParam" :rules="rules" label-width="100px">
+        <el-row>
+            <el-col :span="24">
+                <el-form-item label="上级菜单" class="w-hundred" prop="pid">
+                    <el-tree-select v-model="submitParam.pid" :data="treeList" check-strictly :render-after-expand="false"
+                        class="w-hundred" />
+                </el-form-item>
+            </el-col>
+        </el-row>
+        <el-row>
+            <el-col :span="24">
+                <el-form-item label="菜单类型" class="w-hundred" prop="menuType">
+                    <el-radio-group v-model="submitParam.menuType" class="w-hundred">
+                        <el-radio :label="idx" v-for="(item, idx) in menuOptions" :key="idx">{{ item }}</el-radio>
+                    </el-radio-group>
+                </el-form-item>
+            </el-col>
+        </el-row>
+        <el-row>
+            <el-col :span="24">
+                <el-form-item label="菜单图标" class="w-hundred" prop="icon">
+                    <el-input placeholder="请选择菜单图标" v-model="submitParam.icon" class="w-hundred">
+                        <template #append>
+                            <el-icon @click="isShowIcon = true">
+                                <CirclePlus />
+                            </el-icon>
+                        </template>
+                    </el-input>
+                </el-form-item>
+            </el-col>
+        </el-row>
+        <el-row>
+            <el-col :span="12">
+                <el-form-item label="菜单名称" prop="name">
+                    <el-input placeholder="请输入菜单名称" v-model="submitParam.name" />
+                </el-form-item>
+            </el-col>
+            <el-col :span="12">
+                <el-form-item label="显示排序" prop="sort">
+                    <el-input-number v-model="submitParam.sort" :min="0" :max="1000" controls-position="right" />
+                </el-form-item>
+            </el-col>
+        </el-row>
+        <el-row>
+            <el-col :span="12">
+                <el-form-item prop="component">
+                    <template #label>
+                        <label>
+                            <el-tooltip content="组件路径，如：`dashboard/index`，默认在`views`目录下" placement="top">
+                                <el-icon>
+                                    <QuestionFilled />
+                                </el-icon>
+                            </el-tooltip>
+                            组件路径
+                        </label>
+                    </template>
+
+                    <el-input placeholder="请输入组件路径" v-model="submitParam.component" />
+                </el-form-item>
+            </el-col>
+            <el-col :span="12">
+                <el-form-item prop="path">
+                    <template #label>
+                        <label>
+                            <el-tooltip content="路由路径，如`/dashboard/index`，在网页搜索的路由路径http://localhost:3003/#/dashboard/index。如果为空，默认使用组件路径" placement="top">
+                                <el-icon>
+                                    <QuestionFilled />
+                                </el-icon>
+                            </el-tooltip>
+                            路由路径
+                        </label>
+                    </template>
+
+                    <el-input placeholder="请输入组件路径" v-model="submitParam.path" />
+                </el-form-item>
+            </el-col>
+        </el-row>
+        <el-row>
+            <el-col :span="24">
+                <el-form-item prop="isShow">
+                    <template #label>
+                        <label>
+                            <el-tooltip content="侧边栏菜单是否显示" placement="top">
+                                <el-icon>
+                                    <QuestionFilled />
+                                </el-icon>
+                            </el-tooltip>
+                            显示状态
+                        </label>
+                    </template>
+                    <el-radio-group v-model="submitParam.isShow">
+                        <el-radio :label="idx" v-for="(item, idx) in showStatus" :key="idx">{{ item }}</el-radio>
+                    </el-radio-group>
+                </el-form-item>
+            </el-col>
+        </el-row>
         <el-form-item align="center">
             <template v-if="status === 'add'">
                 <el-button type="primary" @click="addMenuItem">新增</el-button>
@@ -51,7 +113,8 @@
 <script setup lang="ts">
 import { onMounted, reactive, ref } from 'vue';
 import IconModel from '@/components/icon-menu.vue'
-import { AddMenuParams } from '#/role/menu'
+import { MenuDto } from '#/role/menu'
+import { FormInstance, FormRules } from 'element-plus';
 const props = defineProps({
     status: {
         type: String,
@@ -72,30 +135,42 @@ const props = defineProps({
 })
 const emit = defineEmits(['cancel', 'addMenu', 'updateMenu'])
 const isShowIcon = ref(false)
-const menuSelects = ref([])
 const menuOptions = reactive(['目录', '菜单', '按钮'])
 const showStatus = reactive(['显示', '隐藏'])
 
-const submitParam = ref<AddMenuParams>({
+const ruleFormRef = ref<FormInstance>()
+
+const submitParam = ref<MenuDto>({
     pid: 0,
     menuType: 0,
     icon: '',
     name: '',
     sort: 0,
     component: '',
-    isShow: 0
+    path: '',
+    isShow: 0,
 })
 
 const menuId = ref('')
 
-const handleChange = () => {
-}
+const rules = reactive<FormRules<MenuDto>>({
+    pid: [{ required: true, message: '请选择上级菜单', trigger: 'blur' }],
+    menuType: [{ required: true, message: '请选择菜单类型', trigger: 'blur' }],
+    name: [{ required: true, message: '请输入菜单名称', trigger: 'blur' }],
+    sort: [{ required: true, message: '请输入排序', trigger: 'blur' }],
+    component: [{ required: true, message: '请输入组件路径', trigger: 'blur' }],
+    isShow: [{ required: true, message: '请选择是否显示', trigger: 'blur' }],
+})
 
 const cancel = () => {
     emit('cancel')
 }
 const addMenuItem = () => {
-    emit('addMenu', submitParam.value)
+    ruleFormRef.value?.validate((valid) => {
+        if(valid){
+            emit('addMenu', submitParam.value)
+        }
+    })
 }
 
 const getIconKey = (key: string) => {
@@ -104,15 +179,19 @@ const getIconKey = (key: string) => {
 }
 
 const updateMenu = () => {
-    const { pid, menuType, icon, name, sort, component, isShow } = submitParam.value
-    const menuItem = { pid, menuType, icon, name, sort, component, isShow, id: menuId.value }
-    emit('updateMenu', menuItem)
+    const { pid, menuType, icon, name, sort, component, path, isShow } = submitParam.value
+    const menuItem = { pid, menuType, icon, name, sort, component, path, isShow, id: menuId.value }
+    ruleFormRef.value?.validate((valid) => {
+        if(valid){
+            emit('updateMenu', menuItem)
+        }
+    })
 }
 
 const init = () => {
     if (props.menuItem) {
-        const { id, pid, menuType, icon, name, sort, component, isShow } = props.menuItem;
-        submitParam.value = { pid, menuType, icon, name, sort, component, isShow }
+        const { id, pid, menuType, icon, name, sort, component, path, isShow } = props.menuItem;
+        submitParam.value = { pid, menuType, icon, name, sort, component, path, isShow }
         menuId.value = id
     }
 }

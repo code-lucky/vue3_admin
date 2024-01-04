@@ -1,1 +1,0 @@
-import{d as a,o as t,c as e,m as s,h as d,k as o}from"./index-ec7e6dc7.js";const n=a({__name:"index",setup(a){const n=o();return t((()=>{s(Number(localStorage.getItem("userId"))||0).then((a=>{n.push({path:a.data[0].path?a.data[0].path:a.data[0].component})}))})),(a,t)=>(d(),e("div"))}});export{n as default};

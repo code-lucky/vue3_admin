@@ -28,10 +28,12 @@ import { ElMessage, FormInstance } from 'element-plus'
 import { login } from '@/api/user'
 import { userStore } from '@/store/user'
 import { useRouter } from 'vue-router';
+import { encrypt } from '@/utils/crypoto'
 const store = userStore()
 const ruleFormRef = ref<FormInstance>()
 const router = useRouter()
 const isPc = ref(true)
+const oldPassword = ref('')
 const validateUser = (rule: Object, value: string, callback: any) => {
     if (value === '') {
         callback(new Error('用户名不能为空'))
@@ -72,14 +74,18 @@ const submitForm = (formEl: FormInstance | undefined) => {
     formEl.validate((valid) => {
         if (valid) {
             //开始执行登陆
+            oldPassword.value = ruleForm.password
+            ruleForm.password = encrypt(ruleForm.password)
             login(ruleForm).then(async(res: any) => {
                 const data = res
-                if (data.code == 200) {
+                if (data.data !== '密码错误') {
                     await store.setUserInfo(data.data)
                     ElMessage.success(data.message)
                     router.push({ path: '/' })
                 } else {
-                    ElMessage.error(data.message)
+                    // 如果密码错误或者报错把密码重置加密前
+                    ruleForm.password = oldPassword.value
+                    ElMessage.error(data.data)
                 }
             })
         } else {
@@ -178,4 +184,4 @@ $bg: #2d3a4b;
 .isMobile {
     width: 300px;
 }
-</style>
+</style>@/utils/crypoto

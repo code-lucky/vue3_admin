@@ -28,7 +28,7 @@ import { ElMessage, FormInstance } from 'element-plus'
 import { login } from '@/api/user'
 import { userStore } from '@/store/user'
 import { useRouter } from 'vue-router';
-import { encrypt } from '@/utils/crypoto'
+import { encrypt } from '@/utils/crypto'
 const store = userStore()
 const ruleFormRef = ref<FormInstance>()
 const router = useRouter()
@@ -184,4 +184,4 @@ $bg: #2d3a4b;
 .isMobile {
     width: 300px;
 }
-</style>@/utils/crypoto
+</style>@/utils/crypoto@/utils/crypto

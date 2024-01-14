@@ -13,7 +13,7 @@
         </div>
         <div class="navbar-info">
             <div class="navbar-info-right" @click="isFullScreen">
-                <svgIcon class="navbar-info-right-img" :src="isFull?'exit-fullscreen.svg':'screen-full.svg'" />
+                <svgIcon class="navbar-info-right-img" :src="isFull ? 'exit-fullscreen.svg' : 'screen-full.svg'" />
             </div>
             <el-dropdown class="navbar-info-right">
                 <el-avatar :src="squareUrl" />
@@ -28,7 +28,7 @@
     </div>
     <div class="navigation">
         <el-dropdown v-for="(i, idx) in routes" trigger="contextmenu">
-            <el-tag type="info" :key="i.name" class="mx-1 navigation-item" :closable="i.name !== '首页'"
+            <el-tag type="info" :key="i.name" class="mx-1 navigation-item" :closable="i.name !== routes[0].name"
                 :disable-transitions="false" size="large" @click="goRoute(i.path)" @close="delRoute(i)">{{
                     i.name
                 }}</el-tag>
@@ -61,8 +61,8 @@ const state = reactive({
 const gitUrl = ref("https://github.com/code-lucky")
 
 const routes = ref([{
-    name: '首页',
-    path: '/dashboard'
+    name: '',
+    path: '/'
 }])
 
 const isFull = ref(false)
@@ -95,6 +95,12 @@ const isFullScreen = () => {
 }
 
 const addRouteList = () => {
+    // 初始化时，获取menu中第一个路由
+    const menuList = JSON.parse(localStorage.getItem('menu-list') || '')
+    routes.value = [{
+        name: menuList[0].children[0].name,
+        path: menuList[0].children[0].path
+    }]
     eventBus.$on('route-list', (data: any) => {
         const route = {
             name: data.name,
@@ -135,11 +141,6 @@ const changeCollapse = () => {
 
 const { squareUrl } = toRefs(state)
 
-const keyDown = (e: any) => {
-    if (e.keyCode == 27) {
-
-    }
-}
 
 onMounted(() => {
     addRouteList()
@@ -147,7 +148,6 @@ onMounted(() => {
         isCollapse.value = true
         eventBus.$emit('changeCollapse', isCollapse.value)
     }
-    window.addEventListener('keydown', keyDown)
     document.addEventListener("fullscreenchange", () => {
         isFull.value = !isFull.value
     })
@@ -163,7 +163,7 @@ onMounted(() => {
 })
 
 onUnmounted(() => {
-    window.removeEventListener('keydown', keyDown, false)
+
 })
 
 watch(screenWidth, (newVal, oldVal) => {

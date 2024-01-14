@@ -4,7 +4,7 @@
       <el-input v-model="userName" placeholder="请输入菜单名称" clearable class="w-300" />
       <el-button class="ml-10" type="primary" plain>查询</el-button>
     </div>
-    <el-button type="primary" class="mb-20" @click="isDialog = true">新增</el-button>
+    <el-button type="primary" class="mb-20" @click="addItem">新增</el-button>
     <el-table :data="tableList" border style="width: 100%" row-key="id">
       <el-table-column prop="name" label="菜单名称" />
       <el-table-column prop="icon" label="图标">
@@ -38,44 +38,40 @@
         </template>
       </el-table-column>
     </el-table>
-    <el-dialog v-model="isDialog" title="新增菜单" width="40%">
-      <MenuModel @cancel="cancel" @add-menu="addMenuItem" :treeList="threeList" />
-    </el-dialog>
-
-    <el-dialog v-model="isUpdateDialog" title="编辑菜单" width="40%">
-      <MenuModel @cancel="cancel" @update-menu="updateMenuItem" :menuItem="menuItem" :treeList="threeList"
-        status="edit" />
+    <el-dialog v-model="isDialog" :title="status === 'add' ? '新增菜单' : '更新菜单'" width="40%">
+      <MenuModel @cancel="cancel" v-if="isDialog && status === 'add'" @add-menu="addMenuItem" :status="status" :treeList="threeList" />
+      <MenuModel @cancel="cancel" v-if="isDialog && status === 'edit'" @update-menu="updateMenuItem" :status="status" :menuItem="menuItem"
+        :treeList="threeList" />
     </el-dialog>
     <IconModel />
   </div>
 </template>
 
 <script lang="ts" setup>
-import { inject, onMounted, reactive, ref } from 'vue';
+import { onMounted, reactive, ref } from 'vue';
 import MenuModel from './components/menu-model.vue'
 import { formatDate } from '@/filters/index'
-import { AddMenuParams } from '#/role/menu'
+import { MenuDto } from '#/role/menu'
 import { addMenu, getMenuItemById, getMenuList, getMenuTree, updateMenu } from '@/api/menu'
 import { ElMessage } from 'element-plus';
 
 const isDialog = ref(false)
-const isUpdateDialog = ref(false)
 const userName = ref('')
 const tableList = ref([])
 const statusList = reactive(['显示', '隐藏'])
 const threeList = ref<Object[]>([])
 const menuItem = ref({})
+const status = ref('add')
 
 const cancel = () => {
   isDialog.value = false
-  isUpdateDialog.value = false
 }
 
-const addMenuItem = (val: AddMenuParams) => {
+const addMenuItem = (val: MenuDto) => {
   addMenu(val).then((res: any) => {
     ElMessage.success(res.data)
     isDialog.value = false
-    window.location.reload()
+    getMenuTreeList()
   })
 }
 
@@ -83,16 +79,22 @@ const updateMenuItem = (val: any) => {
   updateMenu(val).then((res: any) => {
     if (res.data === '更新成功') {
       ElMessage.success(res.data)
-      isUpdateDialog.value = false
-      window.location.reload()
+      isDialog.value = false
+      getMenuTreeList()
     }
   })
+}
+
+const addItem = () => {
+  status.value = 'add'
+  isDialog.value = true
 }
 
 const getMenuItem = (id: any) => {
   getMenuItemById(id).then((res: any) => {
     menuItem.value = res.data[0]
-    isUpdateDialog.value = true
+    status.value = 'edit'
+    isDialog.value = true
   })
 }
 
@@ -114,7 +116,7 @@ const getMenuTreeList = () => {
   })
 }
 onMounted(() => {
-  getMenuArr()
+  // getMenuArr()
   getMenuTreeList()
 })
 

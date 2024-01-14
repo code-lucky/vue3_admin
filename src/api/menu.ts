@@ -19,3 +19,7 @@ export function getMenuTree() {
 export function getMenuItemById(id: number) {
     return request({ url: `/menu/getMenuById?id=${id}`, method: 'get' })
 }
+
+export function getMenuByUserId(id: number) {
+    return request({ url: `/menu/getMenuByUserId?id=${id}`, method: 'get' })
+}

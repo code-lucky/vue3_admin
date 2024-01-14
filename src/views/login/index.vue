@@ -16,7 +16,7 @@
                     </el-icon>
                 </el-form-item>
                 <el-form-item>
-                    <el-button type="primary" @click="submitForm(ruleFormRef)" class="content-btn">登陆</el-button>
+                    <el-button type="primary" @click="submitForm(ruleFormRef)" class="content-btn">登录</el-button>
                 </el-form-item>
             </el-form>
         </div>
@@ -28,10 +28,12 @@ import { ElMessage, FormInstance } from 'element-plus'
 import { login } from '@/api/user'
 import { userStore } from '@/store/user'
 import { useRouter } from 'vue-router';
+import { encrypt } from '@/utils/crypto'
 const store = userStore()
 const ruleFormRef = ref<FormInstance>()
 const router = useRouter()
 const isPc = ref(true)
+const oldPassword = ref('')
 const validateUser = (rule: Object, value: string, callback: any) => {
     if (value === '') {
         callback(new Error('用户名不能为空'))
@@ -72,14 +74,18 @@ const submitForm = (formEl: FormInstance | undefined) => {
     formEl.validate((valid) => {
         if (valid) {
             //开始执行登陆
-            login(ruleForm).then((res: any) => {
+            oldPassword.value = ruleForm.password
+            ruleForm.password = encrypt(ruleForm.password)
+            login(ruleForm).then(async(res: any) => {
                 const data = res
-                if (data.code == 200) {
-                    store.setUserInfo(data.data)
+                if (data.data !== '密码错误') {
+                    await store.setUserInfo(data.data)
                     ElMessage.success(data.message)
                     router.push({ path: '/' })
                 } else {
-                    ElMessage.error(data.message)
+                    // 如果密码错误或者报错把密码重置加密前
+                    ruleForm.password = oldPassword.value
+                    ElMessage.error(data.data)
                 }
             })
         } else {

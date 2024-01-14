@@ -1,0 +1,1 @@
+import{p as e}from"./index-31010104.js";function r(r){return e({url:"/user/userLogin",method:"post",data:r})}function t(r){return e({url:"/user/getUserList"+(r?"?userName="+r:""),method:"get"})}function u(r){return e({url:"/user/createUser",method:"post",data:r})}function s(r){return e({url:"/user/updateUser",method:"post",data:r})}export{u as c,t as g,r as l,s as u};

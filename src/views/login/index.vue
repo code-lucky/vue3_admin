@@ -184,4 +184,4 @@ $bg: #2d3a4b;
 .isMobile {
     width: 300px;
 }
-</style>@/utils/crypoto@/utils/crypto
+</style>
